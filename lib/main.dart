@@ -10,12 +10,9 @@ class MyApp extends StatelessWidget {
       title: 'News App',
       theme: ThemeData(fontFamily: 'Google Sans', primarySwatch: Colors.blue),
       home: Scaffold(
-        // appBar: new AppBar(
-        //   title: Text('News App'),
-        //   backgroundColor: Colors.blue.withOpacity(0.5),
-        // ),
+        /* Decision taken to NOT add AppBar */
         body: Cards(), // Invoke the Cards Widget
-        backgroundColor: const Color(0xFFfefefe)
+        backgroundColor: const Color(0xFFecf0f1)
       ),
     );
   }

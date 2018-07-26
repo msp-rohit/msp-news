@@ -11,27 +11,82 @@ class CardsBuilder extends StatefulWidget {
 }
 
 class _CardsBuilderState extends State<CardsBuilder> {
-  final PageController controller = new PageController();
+  int index;
 
   @override
   void initState() {
     super.initState();
-    // TODO
+    index = 0;
+  }
+
+  void switchPages(details) {
+    if(details.primaryVelocity < -1000) {
+      setState(() {
+        index != (widget.cards.length) ? index++ : index; // Next Card (move window forward)
+        // Card @ widget.cards.length is 'end of articles' card: Hence, displaying it.
+        // Above is the reason for not using `index != (widget.cards.length - 1)`
+      });
+    } else if(details.primaryVelocity > 1000) {
+      setState(() {
+        index != 0 ? index--: index; // Previous Card (move window backward)
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      scrollDirection: Axis.vertical,
-      controller: controller,
-      itemCount: widget.cards.length, 
-      itemBuilder: (context, index) {
-        return IndividualCard(newsItem: widget.cards[index]);
+    return GestureDetector( 
+      onVerticalDragStart: (details) {
+        print("*Start Vertical: Direction = ${details.globalPosition.direction}");
       },
-      onPageChanged: (index) {
-        print("Current Page: $index");
-        // controller.jumpToPage(0);
-      }
+      onVerticalDragEnd: (details) {
+        print("*End*");
+        print("Primary Velocity: ${details.primaryVelocity}");
+        switchPages(details);
+      },
+      onHorizontalDragStart: (details) {
+        print("*Start Horizontal: Direction = ${details.globalPosition.direction}");
+      },
+      onHorizontalDragEnd: (details) {
+        print("*End*");
+        print("Primary Velocity: ${details.primaryVelocity}");
+        switchPages(details);
+      },
+      child: Stack(
+        children: <Widget>[
+          /* Last card: For border/shadow effects */
+          Container(
+            margin: new EdgeInsets.only(
+              top: 30.0,
+              bottom: 10.0,
+              left: 10.0,
+              right: 10.0
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                const Radius.circular(10.0),
+              ),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: const Color(0xcc000000),
+                  offset: Offset(0.0, 1.0),
+                  blurRadius: 1.0,
+                )
+              ]
+            ),
+            child: Center(
+              child: Text(
+                'End of articles'
+              )
+            )
+          ),
+          /* Real Card(s): */
+          IndividualCard(
+            newsItem: widget.cards[index == widget.cards.length ? index - 1 : index]
+          )
+        ]
+      )
     );
   }
 }

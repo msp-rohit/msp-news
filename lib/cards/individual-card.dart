@@ -4,29 +4,19 @@ import 'package:url_launcher/url_launcher.dart';
 
 class IndividualCard extends StatefulWidget {
   final News newsItem;
-  IndividualCard({Key key, this.newsItem}) : super(key: key);
+  final double position;
+  IndividualCard({Key key, this.newsItem, this.position}) : super(key: key);
   
   @override
   _IndividualCardState createState() => _IndividualCardState();
 }
 
-class _IndividualCardState extends State<IndividualCard> {
-  String finalDescription;
-  String finalTitle;
-  String finalSourceName;
-  @override
-  void initState() {
-    super.initState();
-      finalDescription = widget.newsItem.description;
-      finalTitle = widget.newsItem.title;
-      finalSourceName = widget.newsItem.sourceName;
-  }
-  
+class _IndividualCardState extends State<IndividualCard> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Card(
       shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      elevation: 4.0,
+      elevation: 0.0,
       margin: new EdgeInsets.only(
         top: 30.0,
         bottom: 10.0,
@@ -52,7 +42,7 @@ class _IndividualCardState extends State<IndividualCard> {
           Container(
             padding: new EdgeInsets.only(top: 10.0, bottom: 5.0, right: 10.0, left: 10.0),
             width: double.infinity,
-            child: Text(finalSourceName, style: TextStyle(
+            child: Text(widget.newsItem.sourceName, style: TextStyle(
                 fontSize: 11.0,
                 fontFamily: 'Roboto'
               ),
@@ -63,7 +53,7 @@ class _IndividualCardState extends State<IndividualCard> {
           Container(
             padding: new EdgeInsets.only(bottom: 5.0, left: 10.0, right: 10.0),
             width: double.infinity,
-            child: Text(finalTitle, style: TextStyle(
+            child: Text(widget.newsItem.title, style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500
               ),
@@ -87,7 +77,7 @@ class _IndividualCardState extends State<IndividualCard> {
             child: Container(
               padding: new EdgeInsets.only(bottom: 15.0, right: 10.0, left: 10.0),
               width: double.infinity,
-              child: Text(finalDescription, style: TextStyle(
+              child: Text(widget.newsItem.description, style: TextStyle(
                   fontSize: 15.0,
                   height: 1.3,
                   fontFamily: 'Roboto'
@@ -129,8 +119,10 @@ class _IndividualCardState extends State<IndividualCard> {
                 child: Text(
                   'View Article',
                   style: TextStyle(
-                    fontSize: 12.0
-                  ),
+                    color: const Color(0xFF2980b9),
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w500
+                  )
                 )
               ) 
             )
