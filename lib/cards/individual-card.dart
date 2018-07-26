@@ -25,7 +25,8 @@ class _IndividualCardState extends State<IndividualCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+      shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      elevation: 4.0,
       margin: new EdgeInsets.only(
         top: 30.0,
         bottom: 10.0,
@@ -35,55 +36,67 @@ class _IndividualCardState extends State<IndividualCard> {
       color: const Color(0xFFFFFFFF),
       child: Column(
         children: <Widget>[
-          Container(
-            height: 250.0,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(widget.newsItem.imageUrl),
-                fit: BoxFit.cover,
+          /* Image: */
+          Flexible(
+            flex: 3,
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(widget.newsItem.imageUrl),
+                  fit: BoxFit.cover,
+                )
               )
             )
           ),
+          /* News Source: */
           Container(
-            padding: new EdgeInsets.only(top: 10.0, bottom: 7.0, left: 10.0, right: 10.0),
-            child: Text(finalTitle, style: TextStyle(
-                fontSize: 22.0,
+            padding: new EdgeInsets.only(top: 10.0, bottom: 5.0, right: 10.0, left: 10.0),
+            width: double.infinity,
+            child: Text(finalSourceName, style: TextStyle(
+                fontSize: 11.0,
+                fontFamily: 'Roboto'
               ),
-              maxLines: 2,
+              overflow: TextOverflow.fade
+            )
+          ),
+          /* News Title: */
+          Container(
+            padding: new EdgeInsets.only(bottom: 5.0, left: 10.0, right: 10.0),
+            width: double.infinity,
+            child: Text(finalTitle, style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500
+              ),
+              maxLines: 3,
               overflow: TextOverflow.ellipsis
             )
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-            Container(
-              padding: new EdgeInsets.only(bottom: 8.0, right: 10.0, left: 10.0),
-              child: Text(finalSourceName, style: TextStyle(
-                  fontSize: 11.0
-                ),
-                overflow: TextOverflow.fade
-              )
-            ),
-            Container(
-              padding: new EdgeInsets.only(bottom: 8.0, right: 10.0, left: 10.0),
-              child: Text(widget.newsItem.publishedDate, style: TextStyle(
-                  fontSize: 11.0
-                ), 
-                overflow: TextOverflow.fade
-              )
+          /* Publish Date: */
+          Container(
+            padding: new EdgeInsets.only(bottom: 10.0, right: 10.0, left: 10.0),
+            width: double.infinity,
+            child: Text(widget.newsItem.publishedDate, style: TextStyle(
+                fontSize: 11.0,
+                fontFamily: 'Roboto'
+              ), 
+              overflow: TextOverflow.fade
             )
-          ]),
+          ),
+          /* Description: */
           Expanded(
             child: Container(
               padding: new EdgeInsets.only(bottom: 15.0, right: 10.0, left: 10.0),
+              width: double.infinity,
               child: Text(finalDescription, style: TextStyle(
                   fontSize: 15.0,
-                  height: 1.3
+                  height: 1.3,
+                  fontFamily: 'Roboto'
                 ),
                 overflow: TextOverflow.fade
               )
             )
           ),
+          /* Article Link Button: */
           Container(
             decoration: BoxDecoration(
               gradient: new LinearGradient(
@@ -99,7 +112,7 @@ class _IndividualCardState extends State<IndividualCard> {
               ),
             ),
             width: double.infinity,
-            height: 75.0,
+            height: 90.0,
             child: Center(
               child: RaisedButton(
                 onPressed: () async {
@@ -109,6 +122,7 @@ class _IndividualCardState extends State<IndividualCard> {
                     throw 'Could not launch ${widget.newsItem.fullArticleLink}';
                   }
                 },
+                padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 15.0),
                 shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                 textColor: Colors.black,
                 color: Colors.white.withOpacity(1.0),

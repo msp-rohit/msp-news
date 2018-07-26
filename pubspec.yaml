@@ -46,18 +46,33 @@ flutter:
   fonts:
     - family: Google Sans
       fonts:
-        - asset: fonts/GoogleSans-Regular.ttf
-        - asset: fonts/GoogleSans-Bold.ttf
-          weight: 900
-        - asset: fonts/GoogleSans-BoldItalic.ttf
-          weight: 900
+        - asset: fonts/googlesans/GoogleSans-Regular.ttf
+        - asset: fonts/googlesans/GoogleSans-Italic.ttf
           style: italic
-        - asset: fonts/GoogleSans-Italic.ttf
+        - asset: fonts/googlesans/GoogleSans-Medium.ttf
+          weight: 500
+        - asset: fonts/googlesans/GoogleSans-MediumItalic.ttf
+          weight: 500
           style: italic
-        - asset: fonts/GoogleSans-Medium.ttf
-          weight: 600
-        - asset: fonts/GoogleSans-MediumItalic.ttf
-          weight: 600
+        - asset: fonts/googlesans/GoogleSans-Bold.ttf
+          weight: 700
+        - asset: fonts/googlesans/GoogleSans-BoldItalic.ttf
+          weight: 700
+          style: italic
+    - family: Roboto
+      fonts:
+        - asset: fonts/roboto/Roboto-Regular.ttf
+        - asset: fonts/roboto/Roboto-Italic.ttf
+          style: italic
+        - asset: fonts/roboto/Roboto-Medium.ttf
+          weight: 500
+        - asset: fonts/roboto/Roboto-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: fonts/roboto/Roboto-Bold.ttf
+          weight: 700
+        - asset: fonts/roboto/Roboto-BoldItalic.ttf
+          weight: 700
           style: italic
           
   # For details regarding fonts from package dependencies,
