@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/flutter_appv1.iml" filepath="$PROJECT_DIR$/flutter_appv1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/flutter_appv1_android.iml" filepath="$PROJECT_DIR$/flutter_appv1_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/newsapp.iml" filepath="$PROJECT_DIR$/newsapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/newsapp_android.iml" filepath="$PROJECT_DIR$/newsapp_android.iml" />
     </modules>
   </component>
 </project>
