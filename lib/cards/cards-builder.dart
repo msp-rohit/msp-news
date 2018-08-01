@@ -15,117 +15,109 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
   bool showCurCard;
   bool showPrevCard;
   bool showNextCard;
-
-  double prevCardY;
-  double tempPrevCardY;
+  /* Card positions */
   double stackCardY;
-  double tempStackCardY;
+  double prevCardY;
+  /* Positioning variables */
   double yStartOffset;
   double yEndOffset;
-  bool animYStart;
+  /* Temporary Variables/Constants */
+  double tempPrevCardY;
+  double tempStackCardY;
+  /* Constants */
+  final double initialPrevPos = -600.0;
 
-  AnimationController yAnimationUp;
-  AnimationController yAnimationDown;
-  AnimationController yFlyOutUp;
-  AnimationController yFlyInDown;
+  /* Animation Controllers */
+  AnimationController flyOutY;
+  AnimationController fallbackY;
+  AnimationController flyInY;
+  AnimationController jumpbackY;
 
   @override
   void initState() {
     super.initState();
+    /* Display related card variables */
     index = -1;
     showPrevCard = index >= 0;
     showCurCard = index + 1 < widget.cards.length;
     showNextCard = index + 2 < widget.cards.length;
-
-    prevCardY = -750.0;
-    tempPrevCardY = -750.0;
+    /* Card positions */
     stackCardY = 0.0;
-    tempStackCardY = 0.0;
-    animYStart = false;
+    prevCardY = initialPrevPos; // Only initially (changed with gesture or widget creation)
+    /* Positioning variables */
+    yStartOffset = 0.0;
+    yEndOffset = 0.0;
+    /* Temporary Variables/Constants */
+    tempPrevCardY = prevCardY;
+    tempStackCardY = stackCardY;
 
-    /* Local variables */
-    double slideUp = 250.0;
-    double slideDown = 150.0;
-    double flyInMovement = 600.0;
-    double flyOutMovement = 750.0;
-
-    /* Animation Controllers */
-    yAnimationUp = new AnimationController(duration: const Duration(milliseconds: 240), vsync: this);
-    yAnimationUp.addListener(() {
-      if(index != widget.cards.length - 1) {
-        setState(() {
-          stackCardY = yAnimationUp.value * -slideUp;
-        });
-      }
-    });
-    yAnimationDown = new AnimationController(duration: const Duration(milliseconds: 50), vsync: this);
-    yAnimationDown.addListener(() {
-      if(index != -1) {
-        setState(() {
-          prevCardY = tempPrevCardY + (yAnimationDown.value * flyInMovement);
-        });
-      }
-    });
-    yFlyOutUp = new AnimationController(duration: const Duration(milliseconds: 240), vsync: this);
-    yFlyOutUp.addListener(() {
+    /* Animation logic */
+    flyOutY = new AnimationController(duration: const Duration(milliseconds: 210), vsync: this);
+    flyOutY.addListener(() {
       /* Next card */
       if(index != widget.cards.length - 1) {
         setState(() {
-          stackCardY = tempStackCardY - (yFlyOutUp.value * flyOutMovement);
-          if(yFlyOutUp.value == 1) {
-            index++;
-            resetParams();
-          }
+          stackCardY = tempStackCardY + (flyOutY.value * tempPrevCardY);
+          if(flyOutY.value == 1) resetParams(true, false);
         });
       }
     });
-    yFlyInDown = new AnimationController(duration: const Duration(milliseconds: 240), vsync: this);
-    yFlyInDown.addListener(() {
+    flyInY = new AnimationController(duration: const Duration(milliseconds: 180), vsync: this);
+    flyInY.addListener(() {
       /* Prev card */
       if(index > -1) {
         setState(() {
-          prevCardY = tempPrevCardY + (yFlyInDown.value * slideDown);
-          if(yFlyInDown.value == 1) {
-            index--;
-            resetParams();
-          }
+          prevCardY = tempPrevCardY - (flyInY.value * tempPrevCardY);
+          if(flyInY.value == 1) resetParams(false, false);
         });
       }
+    });
+    fallbackY = new AnimationController(duration: const Duration(milliseconds: 210), vsync: this);
+    fallbackY.addListener(() {
+      /* Restore current card */
+      setState(() {
+        stackCardY = tempStackCardY - (fallbackY.value * tempStackCardY);
+        if(fallbackY.value == 1) resetParams(false, true);
+      });
+    });
+    jumpbackY = new AnimationController(duration: const Duration(milliseconds: 180), vsync: this);
+    jumpbackY.addListener(() {
+      /* Send back prev card */
+      setState(() {
+        prevCardY = tempPrevCardY + jumpbackY.value * (initialPrevPos - tempPrevCardY);
+        if(jumpbackY.value == 1) resetParams(false, true);
+      });
     });
   }
 
   /* Custom Functions: */
-  void resetParams() {
+  void resetParams(forward, noChange) {
+    if(!noChange) {
+      if(forward) index++;
+      else index--;
+    }
     showPrevCard = index >= 0;
     showCurCard = index + 1 < widget.cards.length;
     showNextCard = index + 2 < widget.cards.length;
-
-    prevCardY = -750.0;
-    tempPrevCardY = -750.0;
+    /* Card Pos */
     stackCardY = 0.0;
-    tempStackCardY = 0.0;
+    prevCardY = initialPrevPos;
+    /* Pos vars */
+    yStartOffset = 0.0;
+    yEndOffset = 0.0;
+    /* Temp vars */
+    tempPrevCardY = prevCardY;
+    tempStackCardY = stackCardY;
+  }
+  double prevInitialPosition(context) {
+    tempPrevCardY = -(MediaQuery.of(context).size.height);
+    return tempPrevCardY;
   }
 
-  void toNextCardY() {
-    if(index < widget.cards.length - 1) {
-      tempStackCardY = stackCardY;
-      yFlyOutUp.forward(from: 0.0);
-    } else {
-      yAnimationUp.reverse(from: 1.0);
-    }
-  }
-
-  void toPrevCardY() {
-    if(index > -1) {
-      tempPrevCardY = prevCardY;
-      yFlyInDown.forward(from: 0.0);
-    } else {
-      yAnimationDown.reverse(from: 1.0);
-    }
-  }
-
+  /* Widget: */
   @override
   Widget build(BuildContext context) {
+    prevCardY = (prevCardY == initialPrevPos) ? prevInitialPosition(context) : prevCardY; // Changed on widget creation
     return GestureDetector(
       onTap: () { /* Do nothing */ },
       onVerticalDragStart: (details) {
@@ -135,44 +127,41 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
       onVerticalDragUpdate: (details) {
         yEndOffset = details.globalPosition.dy;
         double distance = yEndOffset - yStartOffset;
-        if(distance.abs() > 10) {
-          if(!animYStart) {
-            animYStart = true;
-            if(distance < 0) {
-              yAnimationUp.forward(from: 0.0);
-            } else {
-              yAnimationDown.forward(from: 0.0);
-            }
-          }
-        }
+        bool isUpwards = distance < 0;
+        // send current card up
+        if(isUpwards) { setState(() { stackCardY = distance; }); } 
+        // Bring prev card down
+        else { setState(() { prevCardY = tempPrevCardY + distance; }); }
       },
       onVerticalDragEnd: (details) {
         double distance = yEndOffset - yStartOffset;
-        double thresholdValue = 70.0;
-        animYStart = false;
-        // 1. If card was swiped quickly then remove it!
+        double thresholdValue = 160.0;
+        /* Velocity Crossed? */
         if(details.primaryVelocity != 0) {
-          if(distance < 0) { // upwards / next card
-            toNextCardY();
-          } else { // Downwards / prev card
-            toPrevCardY();
+          if(distance < 0) { // next 
+            tempStackCardY = stackCardY;
+            flyOutY.forward(from: 0.0);
+          } else { // prev 
+            tempPrevCardY = prevCardY;
+            flyInY.forward(from: 0.0);
           }
-        } 
-        // 2. If card was swiped slowly then check for distance threshold
-        else {
-          // 2a. If threshold was crossed: complete the action
+        } else {
+          /* Threshold crossed? */
           if(distance.abs() > thresholdValue) {
-            if(distance < 0) { // upwards / next card
-              toNextCardY();
-            } else { // Downwards / prev card
-              toPrevCardY();
+            if(distance < 0) { // next
+              tempStackCardY = stackCardY;
+              flyOutY.forward(from: 0.0);
+            } else { // prev
+              tempPrevCardY = prevCardY;
+              flyInY.forward(from: 0.0);
             }
           } else {
-            // 2b. If threshold was not crossed: reverse the animation
-            if(distance < 0) { // upwards
-              yAnimationUp.reverse(from: 1.0);
-            } else { // Downwards
-              yAnimationDown.reverse(from: 1.0);
+            if(distance < 0) { // restore cur card to init pos
+              tempStackCardY = stackCardY;
+              fallbackY.forward(from: 0.0);
+            } else { // send prev card back up
+              tempPrevCardY = prevCardY;
+              jumpbackY.forward(from: 0.0);
             }
           }
         }
