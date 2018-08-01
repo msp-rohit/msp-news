@@ -28,10 +28,8 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
   final double initialPrevPos = -600.0;
 
   /* Animation Controllers */
-  AnimationController flyOutY;
-  AnimationController fallbackY;
-  AnimationController flyInY;
-  AnimationController jumpbackY;
+  AnimationController flyOutY; Animation<double> _flyOutY;
+  AnimationController flyInY; Animation<double> _flyInY;
 
   @override
   void initState() {
@@ -52,8 +50,9 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
     tempStackCardY = stackCardY;
 
     /* Animation logic */
-    flyOutY = new AnimationController(duration: const Duration(milliseconds: 210), vsync: this);
-    flyOutY.addListener(() {
+    flyOutY = new AnimationController(duration: const Duration(milliseconds: 280), vsync: this);
+    _flyOutY = new CurvedAnimation(parent: flyOutY, curve: Curves.easeInOut);
+    _flyOutY.addListener(() {
       /* Next card */
       if(index != widget.cards.length - 1) {
         setState(() {
@@ -62,8 +61,9 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
         });
       }
     });
-    flyInY = new AnimationController(duration: const Duration(milliseconds: 180), vsync: this);
-    flyInY.addListener(() {
+    flyInY = new AnimationController(duration: const Duration(milliseconds: 280), vsync: this);
+    _flyInY = new CurvedAnimation(parent: flyInY, curve: Curves.easeInOut);
+    _flyInY.addListener(() {
       /* Prev card */
       if(index > -1) {
         setState(() {
@@ -71,22 +71,6 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
           if(flyInY.value == 1) resetParams(false, false);
         });
       }
-    });
-    fallbackY = new AnimationController(duration: const Duration(milliseconds: 210), vsync: this);
-    fallbackY.addListener(() {
-      /* Restore current card */
-      setState(() {
-        stackCardY = tempStackCardY - (fallbackY.value * tempStackCardY);
-        if(fallbackY.value == 1) resetParams(false, true);
-      });
-    });
-    jumpbackY = new AnimationController(duration: const Duration(milliseconds: 180), vsync: this);
-    jumpbackY.addListener(() {
-      /* Send back prev card */
-      setState(() {
-        prevCardY = tempPrevCardY + jumpbackY.value * (initialPrevPos - tempPrevCardY);
-        if(jumpbackY.value == 1) resetParams(false, true);
-      });
     });
   }
 
@@ -126,12 +110,6 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
       },
       onVerticalDragUpdate: (details) {
         yEndOffset = details.globalPosition.dy;
-        double distance = yEndOffset - yStartOffset;
-        bool isUpwards = distance < 0;
-        // send current card up
-        if(isUpwards) { setState(() { stackCardY = distance; }); } 
-        // Bring prev card down
-        else { setState(() { prevCardY = tempPrevCardY + distance; }); }
       },
       onVerticalDragEnd: (details) {
         double distance = yEndOffset - yStartOffset;
@@ -154,14 +132,6 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
             } else { // prev
               tempPrevCardY = prevCardY;
               flyInY.forward(from: 0.0);
-            }
-          } else {
-            if(distance < 0) { // restore cur card to init pos
-              tempStackCardY = stackCardY;
-              fallbackY.forward(from: 0.0);
-            } else { // send prev card back up
-              tempPrevCardY = prevCardY;
-              jumpbackY.forward(from: 0.0);
             }
           }
         }
