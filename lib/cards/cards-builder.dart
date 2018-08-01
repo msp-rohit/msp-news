@@ -22,6 +22,7 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
   double tempStackCardY;
   double yStartOffset;
   double yEndOffset;
+  bool animYStart;
 
   AnimationController yAnimationUp;
   AnimationController yAnimationDown;
@@ -40,6 +41,7 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
     tempPrevCardY = -750.0;
     stackCardY = 0.0;
     tempStackCardY = 0.0;
+    animYStart = false;
 
     /* Local variables */
     double slideUp = 250.0;
@@ -127,21 +129,27 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
     return GestureDetector(
       onTap: () { /* Do nothing */ },
       onVerticalDragStart: (details) {
-        print("x:${details.globalPosition.dx} y:${details.globalPosition.dy} direction:${details.globalPosition.distance}");
         yStartOffset = details.globalPosition.dy;
         yEndOffset = yStartOffset;
-        if(details.globalPosition.direction >= 1) { // Upwards
-          yAnimationUp.forward(from: 0.0);
-        } else { // Downwards
-          yAnimationDown.forward(from: 0.0);
-        }
       },
       onVerticalDragUpdate: (details) {
         yEndOffset = details.globalPosition.dy;
+        double distance = yEndOffset - yStartOffset;
+        if(distance.abs() > 10) {
+          if(!animYStart) {
+            animYStart = true;
+            if(distance < 0) {
+              yAnimationUp.forward(from: 0.0);
+            } else {
+              yAnimationDown.forward(from: 0.0);
+            }
+          }
+        }
       },
       onVerticalDragEnd: (details) {
         double distance = yEndOffset - yStartOffset;
         double thresholdValue = 70.0;
+        animYStart = false;
         // 1. If card was swiped quickly then remove it!
         if(details.primaryVelocity != 0) {
           if(distance < 0) { // upwards / next card
