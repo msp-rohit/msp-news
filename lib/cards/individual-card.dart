@@ -20,7 +20,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: Card(
-        shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0), side: BorderSide(width: 1.0, color: const Color(0x33000000))),
         elevation: 0.0,
         margin: new EdgeInsets.only(
           top: 30.0,

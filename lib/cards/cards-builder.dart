@@ -43,12 +43,12 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
 
     /* Local variables */
     double slideUp = 250.0;
-    double slideDown = 250.0;
-    double flyInMovement = 700.0;
-    double flyOutMovement = 700.0;
+    double slideDown = 150.0;
+    double flyInMovement = 600.0;
+    double flyOutMovement = 750.0;
 
     /* Animation Controllers */
-    yAnimationUp = new AnimationController(duration: const Duration(milliseconds: 220), vsync: this);
+    yAnimationUp = new AnimationController(duration: const Duration(milliseconds: 240), vsync: this);
     yAnimationUp.addListener(() {
       if(index != widget.cards.length - 1) {
         setState(() {
@@ -56,7 +56,7 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
         });
       }
     });
-    yAnimationDown = new AnimationController(duration: const Duration(milliseconds: 160), vsync: this);
+    yAnimationDown = new AnimationController(duration: const Duration(milliseconds: 50), vsync: this);
     yAnimationDown.addListener(() {
       if(index != -1) {
         setState(() {
@@ -64,7 +64,7 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
         });
       }
     });
-    yFlyOutUp = new AnimationController(duration: const Duration(milliseconds: 320), vsync: this);
+    yFlyOutUp = new AnimationController(duration: const Duration(milliseconds: 240), vsync: this);
     yFlyOutUp.addListener(() {
       /* Next card */
       if(index != widget.cards.length - 1) {
@@ -77,7 +77,7 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
         });
       }
     });
-    yFlyInDown = new AnimationController(duration: const Duration(milliseconds: 320), vsync: this);
+    yFlyInDown = new AnimationController(duration: const Duration(milliseconds: 240), vsync: this);
     yFlyInDown.addListener(() {
       /* Prev card */
       if(index > -1) {
@@ -127,6 +127,7 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
     return GestureDetector(
       onTap: () { /* Do nothing */ },
       onVerticalDragStart: (details) {
+        print("x:${details.globalPosition.dx} y:${details.globalPosition.dy} direction:${details.globalPosition.distance}");
         yStartOffset = details.globalPosition.dy;
         yEndOffset = yStartOffset;
         if(details.globalPosition.direction >= 1) { // Upwards
