@@ -5,7 +5,8 @@ import 'package:url_launcher/url_launcher.dart';
 class IndividualCard extends StatefulWidget {
   final News newsItem;
   final double positionY;
-  IndividualCard({Key key, this.newsItem, this.positionY}) : super(key: key);
+  final double positionX;
+  IndividualCard({Key key, this.newsItem, this.positionY, this.positionX}) : super(key: key);
   
   @override
   _IndividualCardState createState() => _IndividualCardState();
@@ -16,7 +17,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
   Widget build(BuildContext context) {
     return Positioned(
       top: widget.positionY,
-      left: 0.0,
+      left: widget.positionX,
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: Card(
