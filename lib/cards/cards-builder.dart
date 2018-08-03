@@ -99,7 +99,6 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
       if(index != widget.cards.length - 1) {
         setState(() {
           stackCardX = -(_flyOutX.value * screenWidth);
-          print("${_flyOutX.value * screenWidth}");
           if(flyOutX.value == 1) resetParams(true, false);
         });
       }
@@ -256,19 +255,22 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
           showNextCard ? IndividualCard(
             newsItem: widget.cards[index + 2] ,
             positionY: 0.0, // Remains fixed (No animations affect this card => static)
-            positionX: 0.0
+            positionX: 0.0,
+            curCard: false
           ) : Container(width: 0.0, height: 0.0),
           /* Current Card: */
           showCurCard ? IndividualCard(
             newsItem: widget.cards[index + 1] ,
             positionY: stackCardY,
-            positionX: stackCardX
+            positionX: stackCardX,
+            curCard: true
           ) : Container(width: 0.0, height: 0.0),
           /* Previous Card: */
           showPrevCard ? IndividualCard(
             newsItem: widget.cards[index],
             positionY: prevCardY,
-            positionX: prevCardX
+            positionX: prevCardX,
+            curCard: false
           ) : Container(width: 0.0, height: 0.0),
         ]
       )
