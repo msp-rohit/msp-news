@@ -30,6 +30,7 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
   double tempStackCardY;
   double tempPrevCardX;
   double tempStackCardX;
+  // double tempDeltaY;
   /* Constants */
   final double initialPrevPosY = -600.0;
   final double initialPrevPosX = 0.0;
@@ -66,6 +67,7 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
     tempStackCardY = stackCardY;
     tempPrevCardX = prevCardX;
     tempStackCardX = stackCardX;
+    // tempDeltaY = 0.0;
 
     /* Animation logic */
     /* Vertical: */
@@ -145,6 +147,7 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
     tempStackCardY = stackCardY;
     tempPrevCardX = prevCardX;
     tempStackCardX = stackCardX;
+    // tempDeltaY = 0.0;
   }
   double prevInitialPositionY(context) {
     tempPrevCardY = -(screenHeight);
@@ -170,6 +173,15 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
       },
       onVerticalDragUpdate: (details) {
         yEndOffset = details.globalPosition.dy;
+        // double distance = yEndOffset - yStartOffset;
+        // if(distance < 0) { // Next (Up)
+        //   tempDeltaY = details.delta.dy;
+        //   setState(() {
+        //     stackCardY += tempDeltaY;
+        //   });
+        // } else {
+
+        // }
       },
       onVerticalDragEnd: (details) {
         double distance = yEndOffset - yStartOffset;

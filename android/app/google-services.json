@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "913242906809",
+    "firebase_url": "https://msp-news.firebaseio.com",
+    "project_id": "msp-news",
+    "storage_bucket": "msp-news.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913242906809:android:51b07fa25fd6c39e",
+        "android_client_info": {
+          "package_name": "com.mysmartprice.flutterappv1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913242906809-e39l0nsbf72tamhu1vf8gouu1ilpfhl6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8ufdPOjx22Qw8fzXQK89b_g022qKdS8o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913242906809:android:126c9c40aa7ff478",
+        "android_client_info": {
+          "package_name": "com.mysmartprice.newskard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913242906809-e39l0nsbf72tamhu1vf8gouu1ilpfhl6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8ufdPOjx22Qw8fzXQK89b_g022qKdS8o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
