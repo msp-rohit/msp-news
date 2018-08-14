@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import '../model/news-model.dart';
 import 'individual-card.dart';
 
 class CardsBuilder extends StatefulWidget {
-  final List<News> cards;
+  final List cards;
   CardsBuilder({Key key, this.cards}) : super(key: key);
 
   @override

@@ -9,6 +9,7 @@ class IndividualCard extends StatefulWidget {
   final bool curCard;
   IndividualCard({Key key, this.newsItem, this.positionY, this.positionX, this.curCard}) : super(key: key);
   
+  
   @override
   _IndividualCardState createState() => _IndividualCardState();
 }
