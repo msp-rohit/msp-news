@@ -1,4 +1,4 @@
-package com.example.newsapp;
+package com.mysmartprice.newskard;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
