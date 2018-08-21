@@ -15,8 +15,23 @@ class IndividualCard extends StatefulWidget {
 }
 
 class _IndividualCardState extends State<IndividualCard> with SingleTickerProviderStateMixin {
+  String formatDate(dateString) {
+    var date = (DateTime.parse(dateString)).toLocal(),
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        m = 'am', hour = '${date.hour}', minute = '${date.minute}';
+    if(date.hour > 12) {
+      hour = '${date.hour % 12}';
+      m = 'pm';
+    }
+    if(date.minute < 10) {
+      minute = '0$minute';
+    }
+    return '${months[date.month - 1]} ${date.day} @ $hour:$minute$m';
+  }
   @override
   Widget build(BuildContext context) {
+    var humanDate = formatDate(widget.newsItem.publishedDate); // Adjust the date format.
+
     Widget cardWidget = Card(
       shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0), side: BorderSide(width: 1.0, color: const Color(0x33000000))),
       elevation: 0.0,
@@ -72,7 +87,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
               children: <Widget>[
                 Icon(const IconData(0xe916, fontFamily: 'MaterialIcons'), size: 11.0),
                 Padding(padding: new EdgeInsets.all(1.0)),
-                Text(widget.newsItem.publishedDate, style: TextStyle(
+                Text(humanDate, style: TextStyle(
                     fontSize: 11.0,
                     fontFamily: 'Roboto'
                   ), 
