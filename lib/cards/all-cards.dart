@@ -67,7 +67,7 @@ class _CardsState extends State<Cards> {
   Widget allCards(context) {
     return Container(
       child: StreamBuilder(
-        stream: Firestore.instance.collection('news').snapshots(),
+        stream: Firestore.instance.collection('news').orderBy('publishedDate', descending: true).snapshots(),
         builder: (context, snapshot) {
           if(snapshot.connectionState == ConnectionState.none) {
             return splashScreen(context, false);

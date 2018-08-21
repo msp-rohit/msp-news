@@ -172,15 +172,6 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
       },
       onVerticalDragUpdate: (details) {
         yEndOffset = details.globalPosition.dy;
-        // double distance = yEndOffset - yStartOffset;
-        // if(distance < 0) { // Next (Up)
-        //   tempDeltaY = details.delta.dy;
-        //   setState(() {
-        //     stackCardY += tempDeltaY;
-        //   });
-        // } else {
-
-        // }
       },
       onVerticalDragEnd: (details) {
         double distance = yEndOffset - yStartOffset;
