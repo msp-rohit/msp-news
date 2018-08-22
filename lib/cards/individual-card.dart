@@ -16,17 +16,41 @@ class IndividualCard extends StatefulWidget {
 class _IndividualCardState extends State<IndividualCard> with SingleTickerProviderStateMixin {
   /* Methods */
   String formatDate(dateString) {
-    var date = (DateTime.parse(dateString)).toLocal(),
-        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        m = 'am', hour = '${date.hour}', minute = '${date.minute}';
-    if(date.hour > 12) {
-      hour = '${date.hour % 12}';
-      m = 'pm';
+    var curDate = DateTime.now().toLocal();
+    var date = (DateTime.parse(dateString)).toLocal();
+    var diff = '${curDate.minute - date.minute} minutes ago';
+    
+    if( (curDate.hour - date.hour >= 1) || 
+        (curDate.day - date.day >= 1) || 
+        (curDate.month - date.month >= 1) || 
+        (curDate.year - date.year >= 1) ) {
+
+      if( (curDate.day - date.day >= 1) || 
+          (curDate.day - date.day >= 1) || 
+          (curDate.month - date.month >= 1) || 
+          (curDate.year - date.year >= 1) ) {
+
+        if( (curDate.month - date.month >= 1) ||
+            (curDate.year - date.year >= 1) ) {
+
+          if(curDate.year - date.year >= 1) {
+            diff = '${curDate.year - date.year} year${curDate.year - date.year == 1 ? '' : 's'} ago';
+          } else {
+            diff = '${curDate.month - date.month} month${curDate.month - date.month == 1 ? '' : 's'} ago';
+          }
+
+        } else {
+          diff = '${curDate.day - date.day} day${curDate.day - date.day == 1 ? '' : 's'} ago';
+        }
+
+      } else {
+        diff = '${curDate.hour - date.hour} hour${curDate.hour - date.hour == 1 ? '' : 's'} ago';
+      }
+
     }
-    if(date.minute < 10) {
-      minute = '0$minute';
-    }
-    return '${months[date.month - 1]} ${date.day} @ $hour:$minute$m';
+
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return '$diff, ${months[date.month - 1]} ${date.day}';
   }
 
   @override

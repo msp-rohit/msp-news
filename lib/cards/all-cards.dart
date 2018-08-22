@@ -81,7 +81,6 @@ class _CardsState extends State<Cards> {
       child: StreamBuilder(
         stream: Firestore.instance.collection('news')
                 .orderBy('publishedDate', descending: true)
-                .limit(50)
                 .snapshots(),
         builder: (context, snapshot) {
           if(snapshot.connectionState == ConnectionState.none) {
