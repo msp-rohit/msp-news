@@ -9,12 +9,12 @@ class IndividualCard extends StatefulWidget {
   final bool curCard;
   IndividualCard({Key key, this.newsItem, this.positionY, this.positionX, this.curCard}) : super(key: key);
   
-  
   @override
   _IndividualCardState createState() => _IndividualCardState();
 }
 
 class _IndividualCardState extends State<IndividualCard> with SingleTickerProviderStateMixin {
+  /* Methods */
   String formatDate(dateString) {
     var date = (DateTime.parse(dateString)).toLocal(),
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -28,6 +28,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
     }
     return '${months[date.month - 1]} ${date.day} @ $hour:$minute$m';
   }
+
   @override
   Widget build(BuildContext context) {
     var humanDate = formatDate(widget.newsItem.publishedDate); // Adjust the date format.
@@ -48,12 +49,12 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
           Flexible(
             flex: 3,
             child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(widget.newsItem.imageUrl),
-                  fit: BoxFit.cover,
-                )
-              )
+              constraints: BoxConstraints.expand(),
+              child: FadeInImage.assetNetwork(
+                placeholder: 'images/image_placeholder.jpg',
+                image: widget.newsItem.imageUrl,
+                fit: BoxFit.cover
+              ),
             )
           ),
           /* News Source: */

@@ -32,6 +32,7 @@ flutter:
   assets:
    - images/splash_bg@2x.png
    - images/splash_hdr@2x.png
+   - images/image_placeholder.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

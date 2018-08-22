@@ -10,6 +10,18 @@ class Cards extends StatefulWidget {
 }
 
 class _CardsState extends State<Cards> {
+  bool splash;
+  @override
+  void initState() {
+    super.initState();
+    splash = true;
+  }
+  void handleTimeout() {
+    setState(() {
+      splash = false;
+    });
+  }
+
   List formatSnapshot(ssData) {
     List data = [];
     for(int i = 0; i < ssData.documents.length; i++) {
@@ -67,7 +79,10 @@ class _CardsState extends State<Cards> {
   Widget allCards(context) {
     return Container(
       child: StreamBuilder(
-        stream: Firestore.instance.collection('news').orderBy('publishedDate', descending: true).snapshots(),
+        stream: Firestore.instance.collection('news')
+                .orderBy('publishedDate', descending: true)
+                .limit(50)
+                .snapshots(),
         builder: (context, snapshot) {
           if(snapshot.connectionState == ConnectionState.none) {
             return splashScreen(context, false);
@@ -90,18 +105,6 @@ class _CardsState extends State<Cards> {
         }
       )
     );
-  }
-
-  bool splash;
-  @override
-  void initState() {
-    super.initState();
-    splash = true;
-  }
-  void handleTimeout() {
-    setState(() {
-      splash = false;
-    });
   }
   
   @override
