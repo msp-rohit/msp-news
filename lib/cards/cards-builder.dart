@@ -230,9 +230,9 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
           Container(
             margin: new EdgeInsets.only(
               top: 30.0,
-              bottom: 10.0,
-              left: 10.0,
-              right: 10.0
+              bottom: 5.0,
+              left: 5.0,
+              right: 5.0
             ),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -241,7 +241,7 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
               ),
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                  color: const Color(0xcc000000),
+                  color: const Color(0xffaaaaaa),
                   offset: Offset(0.0, 1.0),
                   blurRadius: 1.0,
                 )

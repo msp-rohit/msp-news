@@ -34,15 +34,17 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
     var humanDate = formatDate(widget.newsItem.publishedDate); // Adjust the date format.
 
     Widget cardWidget = Card(
-      shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0), side: BorderSide(width: 1.0, color: const Color(0x33000000))),
+      shape: new RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0)
+      ),
       elevation: 0.0,
       margin: new EdgeInsets.only(
         top: 30.0,
-        bottom: 10.0,
-        left: 10.0,
-        right: 10.0
+        bottom: 5.0,
+        left: 5.0,
+        right: 5.0
       ),
-      color: const Color(0xFFFFFFFF),
+      color: Colors.white,
       child: Column(
         children: <Widget>[
           /* Image: */
