@@ -19,38 +19,44 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
     var curDate = DateTime.now().toLocal();
     var date = (DateTime.parse(dateString)).toLocal();
     var diff = '${curDate.minute - date.minute} minutes ago';
-    
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
     if( (curDate.hour - date.hour >= 1) || 
         (curDate.day - date.day >= 1) || 
         (curDate.month - date.month >= 1) || 
         (curDate.year - date.year >= 1) ) {
-
       if( (curDate.day - date.day >= 1) || 
           (curDate.day - date.day >= 1) || 
           (curDate.month - date.month >= 1) || 
           (curDate.year - date.year >= 1) ) {
-
         if( (curDate.month - date.month >= 1) ||
             (curDate.year - date.year >= 1) ) {
-
           if(curDate.year - date.year >= 1) {
-            diff = '${curDate.year - date.year} year${curDate.year - date.year == 1 ? '' : 's'} ago';
+            diff = '${curDate.year - date.year} year${curDate.year - date.year == 1 ? '' : 's'} ago - ${months[date.month - 1]} ${date.day}';
           } else {
-            diff = '${curDate.month - date.month} month${curDate.month - date.month == 1 ? '' : 's'} ago';
+            diff = '${curDate.month - date.month} month${curDate.month - date.month == 1 ? '' : 's'} ago - ${months[date.month - 1]} ${date.day}';
           }
-
         } else {
-          diff = '${curDate.day - date.day} day${curDate.day - date.day == 1 ? '' : 's'} ago';
+          diff = '${curDate.day - date.day} day${curDate.day - date.day == 1 ? '' : 's'} ago - ${months[date.month - 1]} ${date.day}';
         }
-
       } else {
         diff = '${curDate.hour - date.hour} hour${curDate.hour - date.hour == 1 ? '' : 's'} ago';
       }
-
     }
+    return diff;
+  }
 
-    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return '$diff, ${months[date.month - 1]} ${date.day}';
+  Widget loadImageWithoutErr() {
+    try {
+      return FadeInImage.assetNetwork(
+        placeholder: 'images/image_placeholder.jpg',
+        image: widget.newsItem.imageUrl,
+        fit: BoxFit.cover
+      );
+    } catch (Exception) {
+      print(Exception);
+      return Image.asset('images/image_placeholder.png');
+    }
   }
 
   @override
@@ -76,11 +82,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
             flex: 3,
             child: Container(
               constraints: BoxConstraints.expand(),
-              child: FadeInImage.assetNetwork(
-                placeholder: 'images/image_placeholder.jpg',
-                image: widget.newsItem.imageUrl,
-                fit: BoxFit.cover
-              ),
+              child: loadImageWithoutErr()
             )
           ),
           /* News Source: */
