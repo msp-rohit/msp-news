@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../model/news-model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../webview/webview.dart';
 
 class IndividualCard extends StatefulWidget {
   final News newsItem;
@@ -51,7 +52,6 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
     try {
       return new CachedNetworkImageProvider(widget.newsItem.imageUrl);
     } catch (Exception) {
-      print(Exception);
       return AssetImage('images/image_placeholder.png');
     }
   }
@@ -160,13 +160,19 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
             height: 90.0,
             child: Center(
               child: RaisedButton(
-                onPressed: () async {
-                  if (await canLaunch(widget.newsItem.fullArticleLink)) {
-                    await launch(widget.newsItem.fullArticleLink);
-                  } else {
-                    throw 'Could not launch ${widget.newsItem.fullArticleLink}';
-                  }
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => WebView(url: widget.newsItem.fullArticleLink)),
+                  );
                 },
+                // onPressed: () async {
+                //   if (await canLaunch(widget.newsItem.fullArticleLink)) {
+                //     await launch(widget.newsItem.fullArticleLink);
+                //   } else {
+                //     throw 'Could not launch ${widget.newsItem.fullArticleLink}';
+                //   }
+                // },
                 padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 15.0),
                 shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                 textColor: Colors.black,
