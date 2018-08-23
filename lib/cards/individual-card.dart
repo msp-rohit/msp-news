@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../model/news-model.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class IndividualCard extends StatefulWidget {
   final News newsItem;
@@ -46,16 +47,12 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
     return diff;
   }
 
-  Widget loadImageWithoutErr() {
+  ImageProvider loadImageWithoutErr() {
     try {
-      return FadeInImage.assetNetwork(
-        placeholder: 'images/image_placeholder.jpg',
-        image: widget.newsItem.imageUrl,
-        fit: BoxFit.cover
-      );
+      return new CachedNetworkImageProvider(widget.newsItem.imageUrl);
     } catch (Exception) {
       print(Exception);
-      return Image.asset('images/image_placeholder.png');
+      return AssetImage('images/image_placeholder.png');
     }
   }
 
@@ -82,7 +79,12 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
             flex: 3,
             child: Container(
               constraints: BoxConstraints.expand(),
-              child: loadImageWithoutErr()
+              decoration: new BoxDecoration(
+                image: new DecorationImage(
+                  fit: BoxFit.cover,
+                  image: loadImageWithoutErr()
+                )
+              )
             )
           ),
           /* News Source: */
