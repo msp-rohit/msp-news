@@ -116,7 +116,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
             width: double.infinity,
             child: Row(
               children: <Widget>[
-                Icon(const IconData(0xe916, fontFamily: 'MaterialIcons'), size: 11.0),
+                Icon(const IconData(0xe8b5, fontFamily: 'MaterialIcons'), size: 11.0),
                 Padding(padding: new EdgeInsets.all(1.0)),
                 Text(humanDate, style: TextStyle(
                     fontSize: 11.0,
@@ -166,24 +166,26 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
                     MaterialPageRoute(builder: (context) => WebView(url: widget.newsItem.fullArticleLink)),
                   );
                 },
-                // onPressed: () async {
-                //   if (await canLaunch(widget.newsItem.fullArticleLink)) {
-                //     await launch(widget.newsItem.fullArticleLink);
-                //   } else {
-                //     throw 'Could not launch ${widget.newsItem.fullArticleLink}';
-                //   }
-                // },
                 padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 15.0),
                 shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                 textColor: Colors.black,
                 color: Colors.white.withOpacity(1.0),
-                child: Text(
-                  'View Article',
-                  style: TextStyle(
-                    color: const Color(0xFF2980b9),
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w500
-                  )
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                    'View Article',
+                      style: TextStyle(
+                        color: const Color(0xFF2980b9),
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500
+                      )
+                    ),
+                    Container(
+                      padding: new EdgeInsets.only(top: 1.5),
+                      child: Icon(const IconData(0xe409, fontFamily: 'MaterialIcons'), color: const Color(0xFF2980b9), size: 14.0)
+                    )
+                  ]
                 )
               ) 
             )
