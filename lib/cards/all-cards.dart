@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../model/news-model.dart';
 import 'cards-builder.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:async';
 
 class Cards extends StatefulWidget {
   @override
@@ -10,16 +9,9 @@ class Cards extends StatefulWidget {
 }
 
 class _CardsState extends State<Cards> {
-  bool splash;
   @override
   void initState() {
     super.initState();
-    splash = true;
-  }
-  void handleTimeout() {
-    setState(() {
-      splash = false;
-    });
   }
 
   List formatSnapshot(ssData) {
@@ -39,10 +31,9 @@ class _CardsState extends State<Cards> {
     return data;
   }
   
-  Widget splashScreen(context, showLoader) {
+  Widget loadingSplashScreen(context) {
     String splashImage = 'images/splash_bg@2x.png';
     String splashHeader = 'images/splash_hdr@2x.png';
-
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -68,9 +59,9 @@ class _CardsState extends State<Cards> {
               )
             )
           ),
-          showLoader ? Center(
+          Center(
             child: CircularProgressIndicator() // By default, show a loading spinner
-          ) : Text('')
+          )
         ],
       )
     );
@@ -83,16 +74,14 @@ class _CardsState extends State<Cards> {
                 .orderBy('publishedDate', descending: true)
                 .snapshots(),
         builder: (context, snapshot) {
-          if(snapshot.connectionState == ConnectionState.none) {
-            return splashScreen(context, false);
-          }
-          if(snapshot.connectionState == ConnectionState.waiting) {
-            return splashScreen(context, true);
+          if(snapshot.connectionState == ConnectionState.none || 
+             snapshot.connectionState == ConnectionState.waiting) {
+            return loadingSplashScreen(context);
           }
           if(snapshot.connectionState == ConnectionState.active || 
-            snapshot.connectionState == ConnectionState.done) {
+             snapshot.connectionState == ConnectionState.done) {
             if(!snapshot.hasData) {
-              return splashScreen(context, false);
+              return loadingSplashScreen(context);
             } else if(snapshot.hasError) {
               return Center(
                 child: Text("${snapshot.error}")
@@ -108,10 +97,6 @@ class _CardsState extends State<Cards> {
   
   @override
   Widget build(BuildContext context) {
-    if(splash) {
-      var duration = const Duration(seconds: 3);
-      new Timer(duration, handleTimeout);
-    }
-    return splash ? splashScreen(context, false) : allCards(context);
+    return allCards(context);
   }
 }
