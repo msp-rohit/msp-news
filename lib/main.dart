@@ -51,44 +51,22 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
-  Widget splashScreen(context, showLoader) {
-    String splashImage = 'images/splash_bg@2x.png';
-    String splashHeader = 'images/splash_hdr@2x.png';
+  Widget splashScreen(context) {
+    String newsKardImg = 'images/newskard.png';
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(splashImage),
+          image: AssetImage(newsKardImg),
           fit: BoxFit.cover,
         )
-      ),
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.15,
-            left: 40.0,
-            width: 222.0,
-            height: 71.0,
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(splashHeader),
-                  fit: BoxFit.cover,
-                )
-              )
-            )
-          ),
-          showLoader ? Center(
-            child: CircularProgressIndicator() // By default, show a loading spinner
-          ) : Text('')
-        ],
       )
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return splashScreen(context, false);
+    return splashScreen(context);
   }
 }

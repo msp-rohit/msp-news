@@ -11,7 +11,6 @@ dependencies:
   cupertino_icons: ^0.1.2
 
   flutter_webview_plugin: ^0.2.1+2
-  url_launcher: 3.0.3
   cached_network_image: ^0.4.1
   
 
@@ -33,9 +32,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - images/splash_bg@2x.png
-   - images/splash_hdr@2x.png
    - images/image_placeholder.jpg
+   - images/newskard.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

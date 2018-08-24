@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../model/news-model.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../webview/webview.dart';
 

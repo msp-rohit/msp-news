@@ -30,43 +30,24 @@ class _CardsState extends State<Cards> {
     }
     return data;
   }
-  
+
   Widget loadingSplashScreen(context) {
-    String splashImage = 'images/splash_bg@2x.png';
-    String splashHeader = 'images/splash_hdr@2x.png';
+    String newsKardImg = 'images/newskard.png';
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(splashImage),
+          image: AssetImage(newsKardImg),
           fit: BoxFit.cover,
         )
       ),
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.15,
-            left: 40.0,
-            width: 222.0,
-            height: 71.0,
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(splashHeader),
-                  fit: BoxFit.cover,
-                )
-              )
-            )
-          ),
-          Center(
-            child: CircularProgressIndicator() // By default, show a loading spinner
-          )
-        ],
+      child: Center(
+        child: CircularProgressIndicator() // By default, show a loading spinner
       )
     );
   }
-
+  
   Widget allCards(context) {
     return Container(
       child: StreamBuilder(
