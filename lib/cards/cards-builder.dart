@@ -39,6 +39,7 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
   double screenWidth;
   /* WebView flags */
   bool webViewClose;
+  bool disableSwipes;
 
   /* Animation Controllers */
   AnimationController flyOutY; Animation<double> _flyOutY;
@@ -77,6 +78,7 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
     tempStackCardX = stackCardX;
     /* WebView */
     webViewClose = false;
+    disableSwipes = false;
 
     /* Animation logic */
     /* Vertical: */
@@ -158,6 +160,7 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
     tempStackCardX = stackCardX;
     /* WebView */
     webViewClose = false;
+    disableSwipes = false;
   }
   double prevInitialPositionY(context) {
     tempPrevCardY = -(screenHeight);
@@ -170,14 +173,14 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
 
   /* Web view state functions */
   void showWebView() {
-    print('true');
     return setState(() {
+      disableSwipes = true;
       webViewClose = true;
     });
   }
   void hideWebView() {
-    print('false');
     return setState(() {
+      disableSwipes = false;
       webViewClose = false;
     });
   }
@@ -194,25 +197,32 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
           hideWebView();
         },
         child: Container(
-          alignment: AlignmentDirectional(0.0, 0.0),
           color: Colors.white,
           child: Column(
             children: <Widget>[
-              Expanded(child: Container()),
               Container(
                 decoration: BoxDecoration(
+                  color: const Color(0xFFA9A9A9),
                   border: Border.all(
                     color: const Color(0xFFDFE1E8),
                     width: 1.0
                   )
                 ),
                 width: double.infinity,
-                height: 60.0,
+                height: 80.0,
                 padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-                child: Icon(
-                  Icons.close, 
-                  color: Color(0xFF333333)
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.close, 
+                      color: Color(0xFF333333)
+                    ),
+                    Expanded(child: Container())
+                  ]
                 )
+              ),
+              Expanded(
+                child: Center(child: CircularProgressIndicator())
               )
             ]
           )
@@ -231,13 +241,16 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
     return GestureDetector(
       onTap: () { /* Do nothing */ },
       onVerticalDragStart: (details) {
+        if(disableSwipes) return;
         yStartOffset = details.globalPosition.dy;
         yEndOffset = yStartOffset;
       },
       onVerticalDragUpdate: (details) {
+        if(disableSwipes) return;
         yEndOffset = details.globalPosition.dy;
       },
       onVerticalDragEnd: (details) {
+        if(disableSwipes) return;
         double distance = yEndOffset - yStartOffset;
         double thresholdValue = 160.0;
         /* Velocity Crossed? */
@@ -263,13 +276,16 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
         }
       },
       onHorizontalDragStart: (details) {
+        if(disableSwipes) return;
         yStartOffset = details.globalPosition.dx;
         yEndOffset = yStartOffset;
       },
       onHorizontalDragUpdate: (details) {
+        if(disableSwipes) return;
         yEndOffset = details.globalPosition.dx;
       },
       onHorizontalDragEnd: (details) {
+        if(disableSwipes) return;
         double distance = yEndOffset - yStartOffset;
         double thresholdValue = 80.0;
         /* Velocity Crossed? */
