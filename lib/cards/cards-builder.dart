@@ -188,20 +188,26 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
           hideWebView();
         },
         child: Container(
-          padding: EdgeInsets.all(5.0),
           alignment: AlignmentDirectional(0.0, 0.0),
           color: Colors.white,
           child: Column(
             children: <Widget>[
+              Expanded(child: Container()),
               Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const Color(0xFFDFE1E8),
+                    width: 1.0
+                  )
+                ),
+                width: double.infinity,
+                height: 60.0,
                 padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-                child: Text(
-                  'x',
-                  style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
-                  textAlign: TextAlign.left,
+                child: Icon(
+                  Icons.close, 
+                  color: Color(0xFF333333)
                 )
-              ),
-              Expanded(child: Container())
+              )
             ]
           )
         )

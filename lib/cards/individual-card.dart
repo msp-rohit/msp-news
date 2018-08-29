@@ -173,9 +173,9 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
                     widget.newsItem.fullArticleLink,
                     rect: new Rect.fromLTWH(
                       0.0, 
-                      50.0, 
+                      0.0, 
                       MediaQuery.of(context).size.width, 
-                      MediaQuery.of(context).size.height
+                      MediaQuery.of(context).size.height - 60.0
                     )
                   );
                 },
