@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'individual-card.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class CardsBuilder extends StatefulWidget {
   final List cards;
@@ -36,6 +37,8 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
   /* Screen dimensions */
   double screenHeight;
   double screenWidth;
+  /* WebView flags */
+  bool webViewClose;
 
   /* Animation Controllers */
   AnimationController flyOutY; Animation<double> _flyOutY;
@@ -66,7 +69,8 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
     tempStackCardY = stackCardY;
     tempPrevCardX = prevCardX;
     tempStackCardX = stackCardX;
-    // tempDeltaY = 0.0;
+    /* WebView */
+    webViewClose = false;
 
     /* Animation logic */
     /* Vertical: */
@@ -146,7 +150,8 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
     tempStackCardY = stackCardY;
     tempPrevCardX = prevCardX;
     tempStackCardX = stackCardX;
-    // tempDeltaY = 0.0;
+    /* WebView */
+    webViewClose = false;
   }
   double prevInitialPositionY(context) {
     tempPrevCardY = -(screenHeight);
@@ -155,6 +160,53 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
   double prevInitialPositionX(context) {
     tempPrevCardX = 0.0;
     return tempPrevCardX;
+  }
+
+  /* Web view state functions */
+  void showWebView() {
+    print('true');
+    return setState(() {
+      webViewClose = true;
+    });
+  }
+  void hideWebView() {
+    print('false');
+    return setState(() {
+      webViewClose = false;
+    });
+  }
+  Widget webViewManager() {
+    return webViewClose ? Positioned(
+      top: 0.0,
+      left: 0.0,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: GestureDetector(
+        onTap: () {
+          final flutterWebviewPlugin = new FlutterWebviewPlugin();
+          flutterWebviewPlugin.close();
+          hideWebView();
+        },
+        child: Container(
+          padding: EdgeInsets.all(5.0),
+          alignment: AlignmentDirectional(0.0, 0.0),
+          color: Colors.white,
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+                child: Text(
+                  'x',
+                  style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+                  textAlign: TextAlign.left,
+                )
+              ),
+              Expanded(child: Container())
+            ]
+          )
+        )
+      )
+    ) : Text(''); 
   }
 
   /* Widget: */
@@ -258,22 +310,29 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
             newsItem: widget.cards[index + 2] ,
             positionY: 0.0, // Remains fixed (No animations affect this card => static)
             positionX: 0.0,
-            curCard: false
+            curCard: false,
+            webViewShow: showWebView,
+            webViewHide: hideWebView 
           ) : Container(width: 0.0, height: 0.0),
           /* Current Card: */
           showCurCard ? IndividualCard(
             newsItem: widget.cards[index + 1] ,
             positionY: stackCardY,
             positionX: stackCardX,
-            curCard: true
+            curCard: true,
+            webViewShow: showWebView,
+            webViewHide: hideWebView 
           ) : Container(width: 0.0, height: 0.0),
           /* Previous Card: */
           showPrevCard ? IndividualCard(
             newsItem: widget.cards[index],
             positionY: prevCardY,
             positionX: prevCardX,
-            curCard: false
+            curCard: false,
+            webViewShow: showWebView,
+            webViewHide: hideWebView 
           ) : Container(width: 0.0, height: 0.0),
+          webViewManager()
         ]
       )
     );

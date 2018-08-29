@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import '../model/news-model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import '../webview/webview.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+
+typedef void Callback();
 
 class IndividualCard extends StatefulWidget {
   final News newsItem;
   final double positionY;
   final double positionX;
   final bool curCard;
-  IndividualCard({Key key, this.newsItem, this.positionY, this.positionX, this.curCard}) : super(key: key);
+  final Callback webViewShow;
+  final Callback webViewHide;
+  IndividualCard({
+    Key key, 
+    this.newsItem, this.positionY, this.positionX, 
+    this.curCard, this.webViewShow, this.webViewHide
+  }) : super(key: key);
   
   @override
   _IndividualCardState createState() => _IndividualCardState();
@@ -47,14 +54,19 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
     return diff;
   }
 
-  ImageProvider loadImageWithoutErr() {
+  Widget loadImageWithoutErr() {
     try {
-      return new CachedNetworkImageProvider(widget.newsItem.imageUrl);
+      return FadeInImage.assetNetwork(
+        placeholder: 'images/image_placeholder.jpg',
+        image: widget.newsItem.imageUrl,
+        fit: BoxFit.cover
+      );
     } catch (Exception) {
-      return AssetImage('images/image_placeholder.png');
+      print(Exception);
+      return Image.asset('images/image_placeholder.png');
     }
   }
-
+  
   @override
   Widget build(BuildContext context) {
     var humanDate = formatDate(widget.newsItem.publishedDate); // Adjust the date format.
@@ -78,12 +90,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
             flex: 3,
             child: Container(
               constraints: BoxConstraints.expand(),
-              decoration: new BoxDecoration(
-                image: new DecorationImage(
-                  fit: BoxFit.cover,
-                  image: loadImageWithoutErr()
-                )
-              )
+              child:loadImageWithoutErr()
             )
           ),
           /* News Source: */
@@ -160,9 +167,16 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
             child: Center(
               child: RaisedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => WebView(url: widget.newsItem.fullArticleLink)),
+                  widget.webViewShow();
+                  final flutterWebviewPlugin = new FlutterWebviewPlugin();
+                  flutterWebviewPlugin.launch(
+                    widget.newsItem.fullArticleLink,
+                    rect: new Rect.fromLTWH(
+                      0.0, 
+                      50.0, 
+                      MediaQuery.of(context).size.width, 
+                      MediaQuery.of(context).size.height
+                    )
                   );
                 },
                 padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 15.0),
