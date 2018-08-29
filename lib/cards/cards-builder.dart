@@ -49,6 +49,12 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
   @override
   void initState() {
     super.initState();
+    /* If description is cut, add "..(more)" */
+    for(var i = 0; i < widget.cards.length - 1; i++) {
+      if(!widget.cards[i].description.endsWith('.')) {
+        widget.cards[i].description = "${widget.cards[i].description} ..(more)";
+      }
+    }
     /* Display related card variables */
     index = -1;
     showPrevCard = index >= 0;

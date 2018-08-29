@@ -22,6 +22,11 @@ class IndividualCard extends StatefulWidget {
 }
 
 class _IndividualCardState extends State<IndividualCard> with SingleTickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   /* Methods */
   String formatDate(dateString) {
     var curDate = DateTime.now().toLocal();
