@@ -26,7 +26,11 @@ class _MyAppState extends State<MyApp> {
   Widget app() {
     return MaterialApp(
       title: 'NewsKard',
-      theme: ThemeData(fontFamily: 'Google Sans', primarySwatch: Colors.blue),
+      theme: ThemeData(
+        fontFamily: 'Google Sans', 
+        primaryColor: const Color(0xFF8D5800),
+        accentColor: const Color(0xFFF5A623)
+      ),
       home: Scaffold(
         /* NOT adding AppBar */
         body: Cards(), // Invoke Cards Widget
@@ -37,36 +41,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return splash ? MaterialApp(
-        title: 'NewsKard',
-        home: SplashScreen()
-    ) : app();
-  }
-}
-
-class SplashScreen extends StatefulWidget {
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-
-  Widget splashScreen(context) {
-    String newsKardImg = 'images/newskard.png';
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(newsKardImg),
-          fit: BoxFit.cover,
-        )
-      )
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return splashScreen(context);
+    return app();
   }
 }

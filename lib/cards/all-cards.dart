@@ -32,20 +32,35 @@ class _CardsState extends State<Cards> {
   }
 
   Widget loadingSplashScreen(context) {
-    String newsKardImg = 'images/newskard.png';
+    String newsKardImg = 'images/newskard_logo.png';
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(newsKardImg),
-          fit: BoxFit.cover,
-        )
-      ),
       child: Center(
-        child: CircularProgressIndicator() // By default, show a loading spinner
+        child: Column(
+          children: <Widget>[
+            Expanded(child: Container()),
+            Container(
+              width: 72.0,
+              height: 72.0,
+              decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(newsKardImg),
+                  fit: BoxFit.scaleDown,
+                )
+              )
+            ),
+            Container(
+              margin: EdgeInsets.all(20.0),
+              width: 116.0,
+              height: 2.0,
+              child: LinearProgressIndicator(backgroundColor: const Color(0xFFDFE1E8))
+            ),
+            Expanded(child: Container())
+          ]
+        )
       )
-    );
+    ); 
   }
   
   Widget allCards(context) {
