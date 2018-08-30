@@ -64,7 +64,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
       return FadeInImage.assetNetwork(
         placeholder: 'images/image_placeholder.png',
         image: widget.newsItem.imageUrl,
-        fit: BoxFit.scaleDown
+        fit: BoxFit.cover
       );
     } catch (Exception) {
       print(Exception);
