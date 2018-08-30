@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'cards/all-cards.dart';
-import 'dart:async';
 
 void main() => runApp(new MyApp());
 
@@ -10,17 +9,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var splash = true;
-
   @override
   void initState (){
     super.initState();
-    splash = true;
-    new Future.delayed(const Duration(seconds: 3), () {
-      setState(() {
-        splash = false;
-      });
-    });
   }
 
   Widget app() {
