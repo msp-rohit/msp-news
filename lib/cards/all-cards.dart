@@ -64,26 +64,27 @@ class _CardsState extends State<Cards> {
   }
   
   Widget allCards(context) {
+    bool loaded = false;
     return Container(
       child: StreamBuilder(
         stream: Firestore.instance.collection('news')
                 .orderBy('publishedDate', descending: true)
                 .snapshots(),
         builder: (context, snapshot) {
-          if(snapshot.connectionState == ConnectionState.none || 
-             snapshot.connectionState == ConnectionState.waiting) {
-            return loadingSplashScreen(context);
-          }
-          if(snapshot.connectionState == ConnectionState.active ||
-             snapshot.connectionState == ConnectionState.done) {
-            if(!snapshot.hasData) {
+          if(!loaded) {
+            if(snapshot.connectionState == ConnectionState.none || 
+               snapshot.connectionState == ConnectionState.waiting) {
               return loadingSplashScreen(context);
             }
-            // if(snapshot.hasError) {
-            //   return loadingSplashScreen(context);
-            // } else {
-              return CardsBuilder(cards: formatSnapshot(snapshot.data));
-            // }
+            if(snapshot.connectionState == ConnectionState.active ||
+               snapshot.connectionState == ConnectionState.done) {
+              if(!snapshot.hasData) {
+                return loadingSplashScreen(context);
+              } else {
+                loaded = true;
+                return CardsBuilder(cards: formatSnapshot(snapshot.data));
+              }
+            }
           }
         }
       )
