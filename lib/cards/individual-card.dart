@@ -178,7 +178,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
                     widget.newsItem.fullArticleLink,
                     rect: new Rect.fromLTWH(
                       0.0, 
-                      60.0, 
+                      72.0, 
                       MediaQuery.of(context).size.width, 
                       MediaQuery.of(context).size.height
                     )
@@ -194,14 +194,14 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
                     Text(
                     'View Article',
                       style: TextStyle(
-                        color: const Color(0xFF2980b9),
+                        color: const Color(0xFF8D5800),
                         fontSize: 12.0,
                         fontWeight: FontWeight.w500
                       )
                     ),
                     Container(
                       padding: new EdgeInsets.only(top: 1.5),
-                      child: Icon(const IconData(0xe409, fontFamily: 'MaterialIcons'), color: const Color(0xFF2980b9), size: 14.0)
+                      child: Icon(const IconData(0xe409, fontFamily: 'MaterialIcons'), color: const Color(0xFF8D5800), size: 14.0)
                     )
                   ]
                 )

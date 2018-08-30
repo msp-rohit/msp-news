@@ -74,17 +74,16 @@ class _CardsState extends State<Cards> {
              snapshot.connectionState == ConnectionState.waiting) {
             return loadingSplashScreen(context);
           }
-          if(snapshot.connectionState == ConnectionState.active || 
+          if(snapshot.connectionState == ConnectionState.active ||
              snapshot.connectionState == ConnectionState.done) {
             if(!snapshot.hasData) {
               return loadingSplashScreen(context);
-            } else if(snapshot.hasError) {
-              return Center(
-                child: Text("${snapshot.error}")
-              );
-            } else {
-              return CardsBuilder(cards: formatSnapshot(snapshot.data));
             }
+            // if(snapshot.hasError) {
+            //   return loadingSplashScreen(context);
+            // } else {
+              return CardsBuilder(cards: formatSnapshot(snapshot.data));
+            // }
           }
         }
       )

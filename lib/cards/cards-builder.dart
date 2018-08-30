@@ -201,29 +201,33 @@ class _CardsBuilderState extends State<CardsBuilder> with TickerProviderStateMix
           child: Column(
             children: <Widget>[
               Container(
+                width: double.infinity,
+                height: 72.0,
                 decoration: BoxDecoration(
                   color: const Color(0xFFF5A623),
-                  border: Border.all(
-                    color: const Color(0xFFF1AE40),
-                    width: 1.0
-                  )
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: const Color(0xffDFE1E8),
+                      offset: Offset(0.0, 1.0),
+                      blurRadius: 2.0,
+                    )
+                  ]
                 ),
-                width: double.infinity,
-                height: 60.0,
-                padding: EdgeInsets.only(top: 20.0, bottom: 10.0, left: 10.0, right: 10.0),
+                padding: EdgeInsets.only(top: 35.0, bottom: 10.0, left: 10.0, right: 10.0),
                 child: Row(
                   children: <Widget>[
                     Icon(
                       Icons.arrow_back, 
-                      color: Color(0xFF333333)
+                      color: Color(0xFFFFFFFF)
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 10.0)
-                    ),
-                    Text(
-                      'newskard', 
-                      style: TextStyle(
-                        fontSize: 18.0
+                      margin: EdgeInsets.only(left: 10.0),
+                      child: Text(
+                        'newskard', 
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          color: const Color(0xFFFFFFFF)
+                        )
                       )
                     ),
                     Expanded(child: Container())
