@@ -85,6 +85,8 @@ class _CardsState extends State<Cards> {
                 return CardsBuilder(cards: formatSnapshot(snapshot.data));
               }
             }
+          } else {
+            return CardsBuilder(cards: formatSnapshot(snapshot.data));
           }
         }
       )

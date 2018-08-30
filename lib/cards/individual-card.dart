@@ -64,7 +64,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
       return FadeInImage.assetNetwork(
         placeholder: 'images/image_placeholder.png',
         image: widget.newsItem.imageUrl,
-        fit: BoxFit.none
+        fit: BoxFit.scaleDown
       );
     } catch (Exception) {
       print(Exception);
@@ -194,14 +194,14 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
                     Text(
                     'View Article',
                       style: TextStyle(
-                        color: const Color(0xFF8D5800),
+                        color: const Color(0xFF603C00),
                         fontSize: 12.0,
                         fontWeight: FontWeight.w500
                       )
                     ),
                     Container(
                       padding: new EdgeInsets.only(top: 1.5),
-                      child: Icon(const IconData(0xe409, fontFamily: 'MaterialIcons'), color: const Color(0xFF8D5800), size: 14.0)
+                      child: Icon(const IconData(0xe409, fontFamily: 'MaterialIcons'), color: const Color(0xFF603C00), size: 14.0)
                     )
                   ]
                 )
