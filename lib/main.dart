@@ -18,7 +18,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'NewsKard',
       theme: ThemeData(
-        fontFamily: 'Google Sans', 
+        fontFamily: 'Poppins', 
         primaryColor: const Color(0xFF8D5800),
         accentColor: const Color(0xFFF5A623)
       ),

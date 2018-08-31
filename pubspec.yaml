@@ -46,19 +46,19 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Google Sans
+    - family: Poppins
       fonts:
-        - asset: fonts/googlesans/GoogleSans-Regular.ttf
-        - asset: fonts/googlesans/GoogleSans-Italic.ttf
+        - asset: fonts/poppins/Poppins-Regular.ttf
+        - asset: fonts/poppins/Poppins-Italic.ttf
           style: italic
-        - asset: fonts/googlesans/GoogleSans-Medium.ttf
+        - asset: fonts/poppins/Poppins-Medium.ttf
           weight: 500
-        - asset: fonts/googlesans/GoogleSans-MediumItalic.ttf
+        - asset: fonts/poppins/Poppins-MediumItalic.ttf
           weight: 500
           style: italic
-        - asset: fonts/googlesans/GoogleSans-Bold.ttf
+        - asset: fonts/poppins/Poppins-Bold.ttf
           weight: 700
-        - asset: fonts/googlesans/GoogleSans-BoldItalic.ttf
+        - asset: fonts/poppins/Poppins-BoldItalic.ttf
           weight: 700
           style: italic
     - family: Roboto

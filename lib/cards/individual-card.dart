@@ -118,8 +118,10 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
                   padding: new EdgeInsets.only(bottom: 5.0, left: 10.0, right: 10.0),
                   width: double.infinity,
                   child: Text(widget.newsItem.title, style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w500
+                      fontSize: 19.0,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Poppins',
+                      height: 0.9
                     ),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis
