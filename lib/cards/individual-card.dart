@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../model/news-model.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'dart:math';
 
 typedef void Callback();
 
@@ -31,31 +32,64 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
   String formatDate(dateString) {
     var curDate = DateTime.now().toLocal();
     var date = (DateTime.parse(dateString)).toLocal();
-    var diff = '${curDate.minute - date.minute} minutes ago';
-    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-    if( (curDate.hour - date.hour >= 1) || 
-        (curDate.day - date.day >= 1) || 
-        (curDate.month - date.month >= 1) || 
-        (curDate.year - date.year >= 1) ) {
-      if( (curDate.day - date.day >= 1) || 
-          (curDate.day - date.day >= 1) || 
-          (curDate.month - date.month >= 1) || 
-          (curDate.year - date.year >= 1) ) {
-        if( (curDate.month - date.month >= 1) ||
-            (curDate.year - date.year >= 1) ) {
-          if(curDate.year - date.year >= 1) {
-            diff = '${curDate.year - date.year} year${curDate.year - date.year == 1 ? '' : 's'} ago - ${months[date.month - 1]} ${date.day}';
-          } else {
-            diff = '${curDate.month - date.month} month${curDate.month - date.month == 1 ? '' : 's'} ago - ${months[date.month - 1]} ${date.day}';
-          }
-        } else {
-          diff = '${curDate.day - date.day} day${curDate.day - date.day == 1 ? '' : 's'} ago - ${months[date.month - 1]} ${date.day}';
-        }
-      } else {
-        diff = '${curDate.hour - date.hour} hour${curDate.hour - date.hour == 1 ? '' : 's'} ago';
+    int second = 1;
+    int minute = 60 * second;
+    int hour = 60 * minute;
+    int day = 24 * hour;
+    int month = 30 * day;
+    int year = 12 * month;
+    var monthsArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    var dateStr = "(${monthsArr[date.month - 1]} ${date.day})";
+    int deltaSeconds = ((curDate.millisecondsSinceEpoch - date.millisecondsSinceEpoch) / 1000).round();
+    var diff;
+
+    print(deltaSeconds);
+
+    /* "Ago" Logic Source : https://stackoverflow.com/questions/11/calculate-relative-time-in-c-sharp */
+    if(deltaSeconds < minute) {
+      diff = (deltaSeconds == 1) ? "One second ago" : "$deltaSeconds seconds ago";
+      print(1);
+    } else if(deltaSeconds < 2 * minute) {
+      diff = "A minute ago";
+      print(2);
+    } else if(deltaSeconds < 45 * minute) {
+      diff = "${(deltaSeconds / minute).round()} minutes ago";
+      print(3);
+    } else if(deltaSeconds < 90 * minute) {
+      diff = "An hour ago";
+      print(4);
+    } else if(deltaSeconds < 24 * hour) {
+      diff = "${(deltaSeconds / hour).round()} hours ago";
+      print(5);
+    } else if(deltaSeconds < 48 * hour) {
+      diff = "Yesterday $dateStr";
+      print(6);
+    } else if(deltaSeconds < 30 * day) {
+      diff = "${(deltaSeconds / day).round()} days ago $dateStr";
+      print(7);
+    } else if(deltaSeconds < 12 * month) {
+      var monthsDiff = (deltaSeconds / month).round();
+      diff = monthsDiff <= 1 ? "One month ago" :  "$monthsDiff months ago $dateStr";
+      print(8);
+    } else {
+      var yearDiff = (deltaSeconds / year).round();
+      diff = yearDiff <= 1 ? "One year ago" :  "$yearDiff years ago $dateStr";
+      print(9);
+    }
+
+    // Overrides:
+    var dayDiff;
+    if(curDate.month - date.month < 1) { // Same month
+      if(curDate.day - date.day >= 25) { // > 25 days
+        diff = "About a month ago $dateStr";
+      } else if(curDate.day - date.day >= 1) { // > 1 day
+        dayDiff = curDate.day - date.day;
+        diff = dayDiff <= 1 ? "Yesterday $dateStr" :  "$dayDiff days ago $dateStr";
       }
     }
+    
     return diff;
   }
 
