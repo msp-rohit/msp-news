@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../model/news-model.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'dart:math';
+import 'package:share/share.dart';
 
 typedef void Callback();
 
@@ -45,38 +45,27 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
     int deltaSeconds = ((curDate.millisecondsSinceEpoch - date.millisecondsSinceEpoch) / 1000).round();
     var diff;
 
-    print(deltaSeconds);
-
     /* "Ago" Logic Source : https://stackoverflow.com/questions/11/calculate-relative-time-in-c-sharp */
     if(deltaSeconds < minute) {
       diff = (deltaSeconds == 1) ? "One second ago" : "$deltaSeconds seconds ago";
-      print(1);
     } else if(deltaSeconds < 2 * minute) {
       diff = "A minute ago";
-      print(2);
     } else if(deltaSeconds < 45 * minute) {
       diff = "${(deltaSeconds / minute).round()} minutes ago";
-      print(3);
     } else if(deltaSeconds < 90 * minute) {
       diff = "An hour ago";
-      print(4);
     } else if(deltaSeconds < 24 * hour) {
       diff = "${(deltaSeconds / hour).round()} hours ago";
-      print(5);
     } else if(deltaSeconds < 48 * hour) {
       diff = "Yesterday $dateStr";
-      print(6);
     } else if(deltaSeconds < 30 * day) {
       diff = "${(deltaSeconds / day).round()} days ago $dateStr";
-      print(7);
     } else if(deltaSeconds < 12 * month) {
       var monthsDiff = (deltaSeconds / month).round();
       diff = monthsDiff <= 1 ? "One month ago" :  "$monthsDiff months ago $dateStr";
-      print(8);
     } else {
       var yearDiff = (deltaSeconds / year).round();
       diff = yearDiff <= 1 ? "One year ago" :  "$yearDiff years ago $dateStr";
-      print(9);
     }
 
     // Overrides:
@@ -209,43 +198,67 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
                   ),
                   width: double.infinity,
                   height: 90.0,
-                  child: Center(
-                    child: RaisedButton(
-                      onPressed: () {
-                        widget.webViewShow();
-                        final flutterWebviewPlugin = new FlutterWebviewPlugin();
-                        flutterWebviewPlugin.launch(
-                          widget.newsItem.fullArticleLink,
-                          rect: new Rect.fromLTWH(
-                            0.0, 
-                            72.0, 
-                            MediaQuery.of(context).size.width, 
-                            MediaQuery.of(context).size.height
-                          )
-                        );
-                      },
-                      padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 15.0),
-                      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                      textColor: Colors.black,
-                      color: Colors.white.withOpacity(1.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                          'View Article',
-                            style: TextStyle(
-                              color: const Color(0xFF603C00),
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w500
-                            )
+                  child: Row(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          Share.share('${widget.newsItem.title} ${widget.newsItem.fullArticleLink}\n\n\nDownload Newskard news app from playstore https://play.google.com/store/apps/details?id=in.newskard.android');
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(top: 5.0, left: 10.0),
+                          height: 30.0,
+                          width: 30.0,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(width: 1.0, color: const Color(0xFF603C00)),
+                            borderRadius: BorderRadius.all(
+                              const Radius.circular(15.0),
+                            ), 
                           ),
-                          Container(
-                            padding: new EdgeInsets.only(top: 1.5),
-                            child: Icon(const IconData(0xe409, fontFamily: 'MaterialIcons'), color: const Color(0xFF603C00), size: 14.0)
+                          child: Icon(Icons.share, size: 18.0, color: const Color(0xFF603C00))
+                        )
+                      ),
+                      Expanded(child: Container()),
+                      Container(
+                        margin: new EdgeInsets.only(right: 10.0),
+                        child: RaisedButton(
+                          onPressed: () {
+                            widget.webViewShow();
+                            final flutterWebviewPlugin = new FlutterWebviewPlugin();
+                            flutterWebviewPlugin.launch(
+                              widget.newsItem.fullArticleLink,
+                              rect: new Rect.fromLTWH(
+                                0.0, 
+                                72.0, 
+                                MediaQuery.of(context).size.width, 
+                                MediaQuery.of(context).size.height
+                              )
+                            );
+                          },
+                          padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 15.0),
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                          textColor: Colors.black,
+                          color: Colors.white.withOpacity(1.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text(
+                              'View Article',
+                                style: TextStyle(
+                                  color: const Color(0xFF603C00),
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w500
+                                )
+                              ),
+                              Container(
+                                padding: new EdgeInsets.only(top: 1.5),
+                                child: Icon(const IconData(0xe409, fontFamily: 'MaterialIcons'), color: const Color(0xFF603C00), size: 14.0)
+                              )
+                            ]
                           )
-                        ]
+                        ) 
                       )
-                    ) 
+                    ]
                   )
                 )
               ],
