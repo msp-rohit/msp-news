@@ -82,19 +82,6 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
     return diff;
   }
 
-  Widget loadImageWithoutErr() {
-    try {
-      return FadeInImage.assetNetwork(
-        placeholder: 'images/image_placeholder.png',
-        image: widget.newsItem.imageUrl,
-        fit: BoxFit.cover
-      );
-    } catch (Exception) {
-      print(Exception);
-      return Image.asset('images/image_placeholder.png');
-    }
-  }
-  
   @override
   Widget build(BuildContext context) {
     var humanDate = formatDate(widget.newsItem.publishedDate); // Adjust the date format.
@@ -116,9 +103,23 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
           /* Image: */
           Flexible(
             flex: 4,
-            child: Container(
-              constraints: BoxConstraints.expand(),
-              child:loadImageWithoutErr()
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  constraints: BoxConstraints.expand(),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0)
+                  ),
+                  child: Image.asset('images/image_placeholder.png', fit: BoxFit.cover)
+                ),
+                Container(
+                  constraints: BoxConstraints.expand(),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0)
+                  ),
+                  child: Image.network(widget.newsItem.imageUrl, fit: BoxFit.cover)                  
+                )
+              ],
             )
           ),
           /* News Source: */
