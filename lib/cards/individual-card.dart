@@ -23,6 +23,14 @@ class IndividualCard extends StatefulWidget {
 }
 
 class _IndividualCardState extends State<IndividualCard> with SingleTickerProviderStateMixin {
+  int imageFlex = 16, contentFlex = 14, shareAndViewFlex = 3;
+  double cardTopMargin = 30.0, cardBottomMargin = 5.0, cardHorizontalMargin = 5.0;
+  double sourceTopPad = 10.0, sourceBottomPad = 2.0, sourceLH = 1.1, sourceFS = 11.0, sourceRightPad = 10.0, sourceLeftPad = 10.0;
+  double titleTopPad = 0.0, titleBottomPad = 5.0, titleLH = 1.0, titleFS = 19.0, titleRightPad = 10.0, titleLeftPad = 10.0;
+  int maxTitleLines = 3;
+  double dateTopPad = 0.0, dateBottomPad = 5.0, dateLH = 1.0, dateFS = 11.0, dateRightPad = 10.0, dateLeftPad = 10.0;
+  double descTopPad = 0.0, descBottomPad = 0.0, descLH = 1.3, descFS = 15.0, descRightPad = 10.0, descLeftPad = 10.0;
+
   @override
   void initState() {
     super.initState();
@@ -86,23 +94,109 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
   Widget build(BuildContext context) {
     var humanDate = formatDate(widget.newsItem.publishedDate); // Adjust the date format.
 
+    int descMaxLines() {
+      int totalFlex = imageFlex + contentFlex + shareAndViewFlex;
+      double screenHeight = MediaQuery.of(context).size.height;
+      double cardHeight = screenHeight - (cardTopMargin + cardBottomMargin);
+      double contentHeight = cardHeight * (contentFlex / totalFlex);
+      double sourceHeight = sourceTopPad + sourceBottomPad + (sourceFS * sourceLH);
+      double titleHeight = titleTopPad + titleBottomPad + (titleFS * titleLH * maxTitleLines);
+      double dateHeight = dateTopPad + dateBottomPad + (dateFS * dateLH);
+      double descriptionHeight = contentHeight - (sourceHeight + titleHeight + dateHeight);
+      int descriptionLines = (descriptionHeight / (descFS * descLH)).floor();
+
+      int correctionFactor = 2;
+      return descriptionLines - correctionFactor;
+    }
+
+    Widget share() {
+      return Container(
+        margin: new EdgeInsets.only(right: 10.0),
+        child: RaisedButton(
+          onPressed: () {
+            Share.share('${widget.newsItem.title} ${widget.newsItem.fullArticleLink}\n\n\nDownload Newskard news app from playstore https://play.google.com/store/apps/details?id=in.newskard.android');
+          },
+          padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 15.0),
+          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+          textColor: Colors.black,
+          color: Colors.white.withOpacity(1.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                padding: new EdgeInsets.only(top: 1.5),
+                margin: new EdgeInsets.only(right: 5.0),
+                child: Icon(Icons.share, color: const Color(0xFF603C00), size: 14.0)
+              ),
+              Text(
+              'Share',
+                style: TextStyle(
+                  color: const Color(0xFF603C00),
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500
+                )
+              )
+            ]
+          )
+        ) 
+      );
+    }
+
+    Widget readMore() {
+      return Container(
+        margin: new EdgeInsets.only(left: 5.0),
+        child: RaisedButton(
+          elevation: 0.0,
+          onPressed: () {
+            widget.webViewShow();
+            final flutterWebviewPlugin = new FlutterWebviewPlugin();
+            flutterWebviewPlugin.launch(
+              widget.newsItem.fullArticleLink,
+              rect: new Rect.fromLTWH(
+                0.0, 
+                72.0, 
+                MediaQuery.of(context).size.width, 
+                MediaQuery.of(context).size.height
+              )
+            );
+          },
+          padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+          textColor: Colors.black,
+          color: Colors.white.withOpacity(1.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+              'Read Full Story',
+                style: TextStyle(
+                  color: const Color(0xFF603C00),
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500
+                )
+              ),
+            ]
+          )
+        ) 
+      );
+    }
+
     Widget cardWidget = Card(
       shape: new RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0)
       ),
       elevation: 0.0,
       margin: new EdgeInsets.only(
-        top: 30.0,
-        bottom: 5.0,
-        left: 5.0,
-        right: 5.0
+        top: cardTopMargin,
+        bottom: cardBottomMargin,
+        left: cardHorizontalMargin,
+        right: cardHorizontalMargin
       ),
       color: Colors.white,
       child: Column(
         children: <Widget>[
           /* Image: */
           Flexible(
-            flex: 4,
+            flex: imageFlex,
             child: Stack(
               children: <Widget>[
                 Container(
@@ -124,14 +218,15 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
           ),
           /* News Source: */
           Flexible(
-            flex: 4,
+            flex: contentFlex,
             child: Column(
               children: <Widget>[
                 Container(
-                  padding: new EdgeInsets.only(top: 10.0, bottom: 5.0, right: 10.0, left: 10.0),
+                  padding: new EdgeInsets.only(top: sourceTopPad, bottom: sourceBottomPad, right: sourceRightPad, left: sourceLeftPad),
                   width: double.infinity,
                   child: Text(widget.newsItem.sourceName, style: TextStyle(
-                      fontSize: 11.0,
+                      fontSize: sourceFS,
+                      height: sourceLH,
                       fontFamily: 'Roboto'
                     ),
                     overflow: TextOverflow.fade
@@ -139,28 +234,29 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
                 ),
                 /* News Title: */
                 Container(
-                  padding: new EdgeInsets.only(bottom: 5.0, left: 10.0, right: 10.0),
+                  padding: new EdgeInsets.only(top: titleTopPad, bottom: titleBottomPad, left: titleLeftPad, right: titleRightPad),
                   width: double.infinity,
                   child: Text(widget.newsItem.title, style: TextStyle(
-                      fontSize: 19.0,
+                      fontSize: titleFS,
                       fontWeight: FontWeight.w500,
                       fontFamily: 'Poppins',
-                      height: 0.9
+                      height: titleLH
                     ),
-                    maxLines: 3,
+                    maxLines: maxTitleLines,
                     overflow: TextOverflow.ellipsis
                   )
                 ),
                 /* Publish Date: */
                 Container(
-                  padding: new EdgeInsets.only(bottom: 10.0, right: 10.0, left: 10.0),
+                  padding: new EdgeInsets.only(top: dateTopPad, bottom: dateBottomPad, right: dateRightPad, left: dateLeftPad),
                   width: double.infinity,
                   child: Row(
                     children: <Widget>[
                       Icon(const IconData(0xe8b5, fontFamily: 'MaterialIcons'), size: 11.0),
                       Padding(padding: new EdgeInsets.all(1.0)),
                       Text(humanDate, style: TextStyle(
-                          fontSize: 11.0,
+                          fontSize: dateFS,
+                          height: dateLH,
                           fontFamily: 'Roboto'
                         ), 
                         overflow: TextOverflow.fade
@@ -169,101 +265,45 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
                   ),
                 ),
                 /* Description: */
-                Expanded(
-                  child: Container(
-                    padding: new EdgeInsets.only(bottom: 15.0, right: 10.0, left: 10.0),
-                    width: double.infinity,
-                    child: Text(widget.newsItem.description, style: TextStyle(
-                        fontSize: 15.0,
-                        height: 1.3,
-                        fontFamily: 'Roboto'
-                      ),
-                      overflow: TextOverflow.fade
-                    )
-                  )
-                ),
-                /* Article Link Button: */
                 Container(
-                  decoration: BoxDecoration(
-                    gradient: new LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        const Color(0x00FFFFFF), const Color(0xDDFFFFFF), 
-                        const Color(0xEEFFFFFF), const Color(0xFFFFFFFF),
-                        const Color(0xFFFFFFFF)
-                      ],
-                      tileMode: TileMode.repeated, // repeats the gradient over the canvas
-                      stops: [0.0, 0.25, 0.5, 0.75, 1.0]
-                    ),
-                  ),
+                  padding: new EdgeInsets.only(top: descTopPad, bottom: descBottomPad, right: descRightPad, left: descLeftPad),
                   width: double.infinity,
-                  height: 90.0,
-                  child: Row(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          Share.share('${widget.newsItem.title} ${widget.newsItem.fullArticleLink}\n\n\nDownload Newskard news app from playstore https://play.google.com/store/apps/details?id=in.newskard.android');
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(top: 5.0, left: 10.0),
-                          height: 30.0,
-                          width: 30.0,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(width: 1.0, color: const Color(0xFF603C00)),
-                            borderRadius: BorderRadius.all(
-                              const Radius.circular(15.0),
-                            ), 
-                          ),
-                          child: Icon(Icons.share, size: 18.0, color: const Color(0xFF603C00))
-                        )
-                      ),
-                      Expanded(child: Container()),
-                      Container(
-                        margin: new EdgeInsets.only(right: 10.0),
-                        child: RaisedButton(
-                          onPressed: () {
-                            widget.webViewShow();
-                            final flutterWebviewPlugin = new FlutterWebviewPlugin();
-                            flutterWebviewPlugin.launch(
-                              widget.newsItem.fullArticleLink,
-                              rect: new Rect.fromLTWH(
-                                0.0, 
-                                72.0, 
-                                MediaQuery.of(context).size.width, 
-                                MediaQuery.of(context).size.height
-                              )
-                            );
-                          },
-                          padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 15.0),
-                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                          textColor: Colors.black,
-                          color: Colors.white.withOpacity(1.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text(
-                              'View Article',
-                                style: TextStyle(
-                                  color: const Color(0xFF603C00),
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w500
-                                )
-                              ),
-                              Container(
-                                padding: new EdgeInsets.only(top: 1.5),
-                                child: Icon(const IconData(0xe409, fontFamily: 'MaterialIcons'), color: const Color(0xFF603C00), size: 14.0)
-                              )
-                            ]
-                          )
-                        ) 
-                      )
-                    ]
+                  child: Text(widget.newsItem.description, style: TextStyle(
+                      fontSize: descFS,
+                      height: descLH,
+                      fontFamily: 'Roboto'
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: descMaxLines(),
                   )
                 )
               ],
             )
+          ),
+          Flexible(
+            flex: shareAndViewFlex,
+            /* Article Link & Share Button: */
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: <BoxShadow>[
+                  BoxShadow (
+                    color: const Color(0xccFFFFFF),
+                    offset: Offset(0.0, -2.0),
+                    blurRadius: 6.0,
+                  ),
+                ]
+              ),
+              width: double.infinity,
+              child: Row(
+                children: <Widget>[
+                  readMore(),
+                  Expanded(child: Container()),
+                  share()
+                ]
+              )
+            )
+              
           )
         ]
       )
