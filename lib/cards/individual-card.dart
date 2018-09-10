@@ -23,13 +23,15 @@ class IndividualCard extends StatefulWidget {
 }
 
 class _IndividualCardState extends State<IndividualCard> with SingleTickerProviderStateMixin {
-  int imageFlex = 16, contentFlex = 14, shareAndViewFlex = 3;
+  int imageFlex = 19, contentFlex = 14, shareAndViewFlex = 3;
   double cardTopMargin = 30.0, cardBottomMargin = 5.0, cardHorizontalMargin = 5.0;
   double sourceTopPad = 10.0, sourceBottomPad = 2.0, sourceLH = 1.1, sourceFS = 11.0, sourceRightPad = 10.0, sourceLeftPad = 10.0;
   double titleTopPad = 0.0, titleBottomPad = 5.0, titleLH = 1.0, titleFS = 19.0, titleRightPad = 10.0, titleLeftPad = 10.0;
   int maxTitleLines = 3;
   double dateTopPad = 0.0, dateBottomPad = 5.0, dateLH = 1.0, dateFS = 11.0, dateRightPad = 10.0, dateLeftPad = 10.0;
   double descTopPad = 0.0, descBottomPad = 0.0, descLH = 1.3, descFS = 15.0, descRightPad = 10.0, descLeftPad = 10.0;
+
+  double idealAspectRatio = num.parse((411.42 / 683.43).toStringAsFixed(2)); // up to 1 decimal point precision
 
   @override
   void initState() {
@@ -93,6 +95,11 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     var humanDate = formatDate(widget.newsItem.publishedDate); // Adjust the date format.
+
+    /* Determine size of card based on aspect ratio */
+    double presentAspectRatio = num.parse((MediaQuery.of(context).size.width / MediaQuery.of(context).size.height).toStringAsFixed(2));
+    // print("$idealAspectRatio $presentAspectRatio");
+    // TODO: Fix card height/width based on screen aspect ratio.
 
     int descMaxLines() {
       int totalFlex = imageFlex + contentFlex + shareAndViewFlex;
@@ -208,10 +215,10 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
                 ),
                 Container(
                   constraints: BoxConstraints.expand(),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0)
+                  child: new ClipRRect(
+                    borderRadius: new BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+                    child: Image.network(widget.newsItem.imageUrl, fit: BoxFit.cover)
                   ),
-                  child: Image.network(widget.newsItem.imageUrl, fit: BoxFit.cover)                  
                 )
               ],
             )
@@ -296,14 +303,13 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
               ),
               width: double.infinity,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   readMore(),
-                  Expanded(child: Container()),
                   share()
                 ]
               )
             )
-              
           )
         ]
       )
