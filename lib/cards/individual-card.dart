@@ -23,13 +23,13 @@ class IndividualCard extends StatefulWidget {
 }
 
 class _IndividualCardState extends State<IndividualCard> with SingleTickerProviderStateMixin {
-  int imageFlex = 19, contentFlex = 14, shareAndViewFlex = 3;
+  int imageFlex = 17, contentFlex = 14, shareAndViewFlex = 3;
   double cardTopMargin = 30.0, cardBottomMargin = 5.0, cardHorizontalMargin = 5.0;
   double sourceTopPad = 10.0, sourceBottomPad = 2.0, sourceLH = 1.1, sourceFS = 11.0, sourceRightPad = 10.0, sourceLeftPad = 10.0;
-  double titleTopPad = 0.0, titleBottomPad = 5.0, titleLH = 0.9, titleFS = 18.0, titleRightPad = 10.0, titleLeftPad = 10.0;
+  double titleTopPad = 0.0, titleBottomPad = 5.0, titleLH = 0.9, titleFS = 16.0, titleRightPad = 10.0, titleLeftPad = 10.0;
   int maxTitleLines = 3;
   double dateTopPad = 0.0, dateBottomPad = 5.0, dateLH = 1.0, dateFS = 11.0, dateRightPad = 10.0, dateLeftPad = 10.0;
-  double descTopPad = 0.0, descBottomPad = 0.0, descLH = 1.2, descFS = 14.0, descRightPad = 10.0, descLeftPad = 10.0;
+  double descTopPad = 0.0, descBottomPad = 0.0, descLH = 1.2, descFS = 13.0, descRightPad = 10.0, descLeftPad = 10.0;
 
   double idealAspectRatio = num.parse((411.42 / 683.43).toStringAsFixed(2)); // up to 1 decimal point precision
 
@@ -112,13 +112,13 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
       double descriptionHeight = contentHeight - (sourceHeight + titleHeight + dateHeight);
       int descriptionLines = (descriptionHeight / (descFS * descLH)).floor();
 
-      int correctionFactor = 2;
+      int correctionFactor = 3;
       return descriptionLines - correctionFactor;
     }
 
     Widget share() {
       return Container(
-        margin: new EdgeInsets.only(right: 10.0),
+        margin: new EdgeInsets.only(right: 10.0, bottom: 2.0),
         child: RaisedButton(
           onPressed: () {
             Share.share('${widget.newsItem.title} ${widget.newsItem.fullArticleLink}\n\n\nDownload Newskard news app from playstore https://play.google.com/store/apps/details?id=in.newskard.android');
@@ -291,7 +291,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
             flex: shareAndViewFlex,
             /* Article Link & Share Button: */
             child: Container(
-              padding: new EdgeInsets.only(bottom: 4.0),
+              padding: new EdgeInsets.only(bottom: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
