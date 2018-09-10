@@ -29,9 +29,12 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
   double titleTopPad = 0.0, titleBottomPad = 5.0, titleLH = 0.9, titleFS = 16.0, titleRightPad = 10.0, titleLeftPad = 10.0;
   int maxTitleLines = 3;
   double dateTopPad = 0.0, dateBottomPad = 5.0, dateLH = 1.0, dateFS = 11.0, dateRightPad = 10.0, dateLeftPad = 10.0;
-  double descTopPad = 0.0, descBottomPad = 0.0, descLH = 1.2, descFS = 13.0, descRightPad = 10.0, descLeftPad = 10.0;
+  double descTopPad = 0.0, descBottomPad = 0.0, descLH = 1.1, descFS = 13.0, descRightPad = 10.0, descLeftPad = 10.0;
 
   double idealAspectRatio = num.parse((411.42 / 683.43).toStringAsFixed(2)); // up to 1 decimal point precision
+  
+  final int primaryColor = 0xFF0B76EB;
+  final int secondaryColor = 0xFF2C95F9;
 
   @override
   void initState() {
@@ -112,7 +115,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
       double descriptionHeight = contentHeight - (sourceHeight + titleHeight + dateHeight);
       int descriptionLines = (descriptionHeight / (descFS * descLH)).floor();
 
-      int correctionFactor = 3;
+      int correctionFactor = 2;
       return descriptionLines - correctionFactor;
     }
 
@@ -133,12 +136,12 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
               Container(
                 padding: new EdgeInsets.only(top: 1.5),
                 margin: new EdgeInsets.only(right: 5.0),
-                child: Icon(Icons.share, color: const Color(0xFF603C00), size: 14.0)
+                child: Icon(Icons.share, color: Color(0xFF444444), size: 14.0)
               ),
               Text(
               'Share',
                 style: TextStyle(
-                  color: const Color(0xFF603C00),
+                  color: Color(0xFF444444),
                   fontSize: 12.0,
                   fontWeight: FontWeight.w500
                 )
@@ -168,7 +171,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
             );
           },
           padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-          textColor: Colors.black,
+          textColor: Color(primaryColor),
           color: Colors.white.withOpacity(1.0),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -176,7 +179,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
               Text(
               'Read Full Story',
                 style: TextStyle(
-                  color: const Color(0xFF603C00),
+                  color: Color(primaryColor),
                   fontSize: 12.0,
                   fontWeight: FontWeight.w500
                 )

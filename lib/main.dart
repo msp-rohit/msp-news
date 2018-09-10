@@ -15,17 +15,20 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget app() {
+    final int primaryColor = 0xFF0B76EB;
+    final int secondaryColor = 0xFF2C95F9;
+
     return MaterialApp(
       title: 'NewsKard',
       theme: ThemeData(
         fontFamily: 'Poppins', 
-        primaryColor: const Color(0xFF8D5800),
-        accentColor: const Color(0xFFF5A623)
+        primaryColor: Color(primaryColor),
+        accentColor: Color(secondaryColor)
       ),
       home: Scaffold(
         /* NOT adding AppBar */
         body: Cards(), // Invoke Cards Widget
-        backgroundColor: const Color(0xFFecf0f1)
+        backgroundColor: const Color(0xFF000000)
       ),
     );
   }
