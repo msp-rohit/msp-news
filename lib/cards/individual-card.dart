@@ -26,10 +26,10 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
   int imageFlex = 19, contentFlex = 14, shareAndViewFlex = 3;
   double cardTopMargin = 30.0, cardBottomMargin = 5.0, cardHorizontalMargin = 5.0;
   double sourceTopPad = 10.0, sourceBottomPad = 2.0, sourceLH = 1.1, sourceFS = 11.0, sourceRightPad = 10.0, sourceLeftPad = 10.0;
-  double titleTopPad = 0.0, titleBottomPad = 5.0, titleLH = 1.0, titleFS = 19.0, titleRightPad = 10.0, titleLeftPad = 10.0;
+  double titleTopPad = 0.0, titleBottomPad = 5.0, titleLH = 0.9, titleFS = 18.0, titleRightPad = 10.0, titleLeftPad = 10.0;
   int maxTitleLines = 3;
   double dateTopPad = 0.0, dateBottomPad = 5.0, dateLH = 1.0, dateFS = 11.0, dateRightPad = 10.0, dateLeftPad = 10.0;
-  double descTopPad = 0.0, descBottomPad = 0.0, descLH = 1.3, descFS = 15.0, descRightPad = 10.0, descLeftPad = 10.0;
+  double descTopPad = 0.0, descBottomPad = 0.0, descLH = 1.2, descFS = 14.0, descRightPad = 10.0, descLeftPad = 10.0;
 
   double idealAspectRatio = num.parse((411.42 / 683.43).toStringAsFixed(2)); // up to 1 decimal point precision
 
@@ -291,17 +291,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
             flex: shareAndViewFlex,
             /* Article Link & Share Button: */
             child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: <BoxShadow>[
-                  BoxShadow (
-                    color: const Color(0xccFFFFFF),
-                    offset: Offset(0.0, -2.0),
-                    blurRadius: 6.0,
-                  ),
-                ]
-              ),
-              width: double.infinity,
+              padding: new EdgeInsets.only(bottom: 4.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
