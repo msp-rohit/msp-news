@@ -65,9 +65,11 @@ class _CardsState extends State<Cards> {
   
   Widget allCards(context) {
     bool loaded = false;
+    int dataLimit = 25;
     return Container(
       child: StreamBuilder(
         stream: Firestore.instance.collection('news')
+                .limit(dataLimit)
                 .orderBy('publishedDate', descending: true)
                 .snapshots(),
         builder: (context, snapshot) {

@@ -21,14 +21,14 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'NewsKard',
       theme: ThemeData(
-        fontFamily: 'Poppins', 
+        fontFamily: 'Poppins',
         primaryColor: Color(primaryColor),
         accentColor: Color(secondaryColor)
       ),
       home: Scaffold(
         /* NOT adding AppBar */
         body: Cards(), // Invoke Cards Widget
-        backgroundColor: const Color(0xFF000000)
+        backgroundColor: Colors.white
       ),
     );
   }
