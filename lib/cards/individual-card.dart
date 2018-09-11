@@ -25,11 +25,11 @@ class IndividualCard extends StatefulWidget {
 class _IndividualCardState extends State<IndividualCard> with SingleTickerProviderStateMixin {
   int imageFlex = 34, contentFlex = 28, shareAndViewFlex = 6;
   double cardTopMargin = 30.0, cardBottomMargin = 5.0, cardHorizontalMargin = 5.0;
-  double sourceTopPad = 10.0, sourceBottomPad = 2.0, sourceLH = 1.1, sourceFS = 11.0, sourceRightPad = 10.0, sourceLeftPad = 10.0;
-  double titleTopPad = 0.0, titleBottomPad = 5.0, titleLH = 0.9, titleFS = 16.0, titleRightPad = 10.0, titleLeftPad = 10.0;
+  double sourceTopPad = 10.0, sourceBottomPad = 2.0, sourceLH = 1.0, sourceFS = 11.0, sourceRightPad = 10.0, sourceLeftPad = 10.0;
+  double titleTopPad = 0.0, titleBottomPad = 5.0, titleLH = 1.0, titleFS = 16.0, titleRightPad = 10.0, titleLeftPad = 10.0;
   int maxTitleLines = 3;
   double dateTopPad = 0.0, dateBottomPad = 5.0, dateLH = 1.0, dateFS = 11.0, dateRightPad = 10.0, dateLeftPad = 10.0;
-  double descTopPad = 0.0, descBottomPad = 0.0, descLH = 1.4, descFS = 13.0, descRightPad = 10.0, descLeftPad = 10.0;
+  double descTopPad = 0.0, descBottomPad = 0.0, descLH = 1.3, descFS = 13.0, descRightPad = 10.0, descLeftPad = 10.0;
 
   double idealAspectRatio = num.parse((411.42 / 683.43).toStringAsFixed(2)); // up to 1 decimal point precision
   
@@ -99,6 +99,12 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
   Widget build(BuildContext context) {
     var humanDate = formatDate(widget.newsItem.publishedDate); // Adjust the date format.
 
+    /* Font adjustments based on resolution (width) of device: */
+    double _titleFS = titleFS + ((MediaQuery.of(context).size.width - 320) / 30);
+    double _descFS = descFS + ((MediaQuery.of(context).size.width - 320) / 40);
+
+    print("$_titleFS $_descFS");
+
     /* Determine size of card based on aspect ratio */
     double presentAspectRatio = num.parse((MediaQuery.of(context).size.width / MediaQuery.of(context).size.height).toStringAsFixed(2));
     // print("$idealAspectRatio $presentAspectRatio");
@@ -112,10 +118,10 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
       double cardHeight = screenHeight - (cardTopMargin + cardBottomMargin);
       double contentHeight = cardHeight * (contentFlex / totalFlex);
       double sourceHeight = sourceTopPad + sourceBottomPad + (sourceFS * sourceLH);
-      double titleHeight = titleTopPad + titleBottomPad + (titleFS * titleLH * titleLines);
+      double titleHeight = titleTopPad + titleBottomPad + (_titleFS * titleLH * titleLines);
       double dateHeight = dateTopPad + dateBottomPad + (dateFS * dateLH);
       double descriptionHeight = contentHeight - (sourceHeight + titleHeight + dateHeight);
-      int descriptionLines = (descriptionHeight / (descFS * descLH)).floor();
+      int descriptionLines = (descriptionHeight / (_descFS * descLH)).floor();
 
       int correctionFactor = 2;
       debugPrint("Max lines of description (line-clamp): ${descriptionLines - correctionFactor}");
@@ -250,7 +256,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
                   padding: new EdgeInsets.only(top: titleTopPad, bottom: titleBottomPad, left: titleLeftPad, right: titleRightPad),
                   width: double.infinity,
                   child: Text(widget.newsItem.title, style: TextStyle(
-                      fontSize: titleFS,
+                      fontSize: _titleFS,
                       fontWeight: FontWeight.w500,
                       fontFamily: 'Poppins',
                       height: titleLH
@@ -282,7 +288,7 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
                   padding: new EdgeInsets.only(top: descTopPad, bottom: descBottomPad, right: descRightPad, left: descLeftPad),
                   width: double.infinity,
                   child: Text(widget.newsItem.description, style: TextStyle(
-                      fontSize: descFS,
+                      fontSize: _descFS,
                       height: descLH,
                       fontFamily: 'Roboto'
                     ),
