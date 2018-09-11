@@ -23,13 +23,13 @@ class IndividualCard extends StatefulWidget {
 }
 
 class _IndividualCardState extends State<IndividualCard> with SingleTickerProviderStateMixin {
-  int imageFlex = 17, contentFlex = 14, shareAndViewFlex = 3;
+  int imageFlex = 34, contentFlex = 28, shareAndViewFlex = 6;
   double cardTopMargin = 30.0, cardBottomMargin = 5.0, cardHorizontalMargin = 5.0;
   double sourceTopPad = 10.0, sourceBottomPad = 2.0, sourceLH = 1.1, sourceFS = 11.0, sourceRightPad = 10.0, sourceLeftPad = 10.0;
   double titleTopPad = 0.0, titleBottomPad = 5.0, titleLH = 0.9, titleFS = 16.0, titleRightPad = 10.0, titleLeftPad = 10.0;
   int maxTitleLines = 3;
   double dateTopPad = 0.0, dateBottomPad = 5.0, dateLH = 1.0, dateFS = 11.0, dateRightPad = 10.0, dateLeftPad = 10.0;
-  double descTopPad = 0.0, descBottomPad = 0.0, descLH = 1.1, descFS = 13.0, descRightPad = 10.0, descLeftPad = 10.0;
+  double descTopPad = 0.0, descBottomPad = 0.0, descLH = 1.4, descFS = 13.0, descRightPad = 10.0, descLeftPad = 10.0;
 
   double idealAspectRatio = num.parse((411.42 / 683.43).toStringAsFixed(2)); // up to 1 decimal point precision
   
@@ -105,17 +105,20 @@ class _IndividualCardState extends State<IndividualCard> with SingleTickerProvid
     // TODO: Fix card height/width based on screen aspect ratio.
 
     int descMaxLines() {
+      int titleLines = widget.newsItem.description.length < 100 ? 2 : maxTitleLines;
+
       int totalFlex = imageFlex + contentFlex + shareAndViewFlex;
       double screenHeight = MediaQuery.of(context).size.height;
       double cardHeight = screenHeight - (cardTopMargin + cardBottomMargin);
       double contentHeight = cardHeight * (contentFlex / totalFlex);
       double sourceHeight = sourceTopPad + sourceBottomPad + (sourceFS * sourceLH);
-      double titleHeight = titleTopPad + titleBottomPad + (titleFS * titleLH * maxTitleLines);
+      double titleHeight = titleTopPad + titleBottomPad + (titleFS * titleLH * titleLines);
       double dateHeight = dateTopPad + dateBottomPad + (dateFS * dateLH);
       double descriptionHeight = contentHeight - (sourceHeight + titleHeight + dateHeight);
       int descriptionLines = (descriptionHeight / (descFS * descLH)).floor();
 
       int correctionFactor = 2;
+      debugPrint("Max lines of description (line-clamp): ${descriptionLines - correctionFactor}");
       return descriptionLines - correctionFactor;
     }
 
